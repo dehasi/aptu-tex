@@ -1,0 +1,94 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=1.5cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 4}
+
+\paragraph{Задание 1.} Числами Белла $B\left(n\right)$ называются числа, равные количеству всевозможных разбиений множества из $n$ элементов. Очевидно, что:
+\[
+	B\left(n\right) = \sum_{k=0}^{n} S\left(n,k\right)
+\]
+Доказать а) некомбинаторно; б) комбинаторно следующее рекуррентное соотношение для чисел Белла:
+\[
+	\begin{split}
+		& B\left(n+1\right) = \sum_{i=0}^{n} \binom{n}{i} B\left(i\right) \\
+		& B\left(0\right) = 1
+	\end{split}
+\]
+
+\begin{Proof}
+Сначала рассмотрим вспомогательное утверждение:
+\begin{equation}
+	S\left(n,k\right) = \sum_{i=k-1}^{n-1} \binom{n-1}{i} S\left(i, k-1\right)
+	\label{math::recurrent}
+\end{equation}
+
+Докажем это утверждение. Рассматриваем множество всех разбиений некоторого множества $X$. Выделем в множестве $X$ элемент $a$. Для каждого $M \subseteq X$ такого что $a \in M$ и $\left|M\right|=i$, существует $S\left(n-i,k-1\right)$ разбиений $X$ на $k$ блоков, таких что $M$ является одним из блоков. А выбрать такое множество $M$ можно $\binom{n-1}{i-1}$ способами, тогда:
+\[
+\begin{split}
+	& S\left(n,k\right) = \sum_{i=1}^{n-k+1} \binom{n-1}{i-1}S\left(n-i,k-1\right) = \sum_{i=1}^{n-\left(k-1\right)} \binom{n-1}{n-i}S\left(n-i,k-1\right) = \\
+& = \sum_{\tilde i=k-1}^{n-1} \binom{n-1}{\tilde i} S\left(\tilde i,k-1\right)
+\end{split}
+\]
+
+Далее рассмотрим утверждение, которое необходимо доказать:
+\[
+	\begin{split}
+	& B\left(n+1\right) = \sum_{i=0}^n \binom{n}{i} B\left(i\right) = \sum_{i=0}^n \binom{n}{i} \sum_{k=0}^i S\left(i,k\right) = \\
+	& = \sum_{i=0}^n \binom{n}{i} \sum_{k=0}^{i+1} S\left(i,k-1\right) = \sum_{i=-1}^n \sum_{k=0}^{i+1} \binom{n}{i} S\left(i,k-1\right) = \\
+	& = \sum_{k=0}^{n+1} \sum_{i=k-1}^{n} \binom{n}{i} S\left(i,k-1\right) = \sum_{k=0}^{n+1} S \left(n+1,k\right)
+	\end{split}
+\]
+последнее преобразование производилось по формуле \ref{math::recurrent}
+
+Рекуррентное доказательство гораздо проще. Пусть есть множество $X = \{1,2,...,n,n+1\}$. Будем рассматривать множество его разбиений. Зафиксируем элемент $n+1$ этот элемент входит в подмножество $M \subseteq X$, где $\left|M\right|=i+1$, выбрать такое подмножество можно $\binom{n}{n-i} = \binom{n}{k}$ способами (один элемент зафиксирован, остальные выбираем из $n$ возможных). Способов разбить все множесто $X$ так чтобы каждое разбиение содержало $M$ в качестве блока разбиения $B\left(n-i=k\right)$ (т. е. разбиваем множество $X \setminus M$), суммируем по всем $k$:
+\[
+	B\left(n+1\right)=\sum_{k=0}^n \binom{n}{k} B\left(k\right)
+\]
+\end{Proof}
+
+\end{document}
