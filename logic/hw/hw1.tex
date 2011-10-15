@@ -1,0 +1,237 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=1.5cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 1}
+
+\paragraph{Здание 1.} Запишите каждое из нижеперечисленных высказываний на естестенном языке в виде пропозицианальной формулы (обозначив простые высказывания пропозициональными переменными). Обратите внимание, что возможны различные формализации высказывания посредством пропозицианальных формул; так что, где это подходит по смыслу, запишите несколько формул для одного высказывания и выясните, равносильны ли эти формулы. Затем для каждой полученной формулы $A$
+\begin{enumerate}
+\item укажите интерпритацию, в которой $A$ истинна,
+
+\item укажите интерпритацию, в которой $A$ ложна,
+
+\item постройте КНФ формулы $A$
+
+\item постройти ДНФ формулы $A$
+\end{enumerate}
+
+Высказывания:
+
+\begin{enumerate}
+\item Если ни в Варшаву мы не поедем, ни в горы мы не отправимся, то мы ежедневно будем ходить на пляж, или если будет идти дождь, то мы будем дома читать книги.
+
+\item Если Платон был в Египте и видел там пирамиды, то они его очень заинтересовали, или если кто-нибудь обратил на них его внимание, и ему было объяснено их устройство, то они могли произвести на него неизгладимое впечатление.
+\end{enumerate}
+
+\begin{Solution}
+Рассматриваем первое высказывание, выделим в нем простые высказывания:
+\begin{itemize}
+\item $a$ - уехали в Варшаву
+
+\item $b$ - отправились в горы
+
+\item $c$ - ходим на пляж ежедневно
+
+\item $d$ - читаем книги
+
+\item $e$ - был дождь
+\end{itemize}
+\[
+	\left(\neg a \wedge \neg b \right) \supset \left(c \vee \left(e \supset d\right)\right)
+\]
+Формула истинна, например, на следующих интерпритациях:
+
+\begin{center}
+\begin{tabular}[t]{|c|c|c|c|c|}
+\hline
+	a & b & c & d & e \\
+\hline
+	0 & 1 & 0 & 0 & 0 \\
+\hline
+	1 & 0 & 0 & 0 & 0 \\
+\hline
+	0 & 0 & 0 & 1 & 1 \\
+\hline
+	1 & 1 & 0 & 0 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+Формула ложна, например, на следующей интерпритации:
+
+\begin{center}
+\begin{tabular}[t]{|c|c|c|c|c|}
+\hline
+	a & b & c & d & e \\
+\hline
+        0 & 0 & 0 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+
+Получение КНФ:
+\[
+	\begin{split}
+		& \left(\left(\neg a \wedge \neg b \right) \supset \left(c \vee \left(e \supset d\right)\right)\right) \Leftrightarrow \left(\neg \left(\neg a \wedge \neg b\right) \vee \left(c \vee \neg e \vee d\right)\right) \Leftrightarrow \\
+		& \Leftrightarrow \left(\neg \neg a \vee \neg \neg b \vee c \vee \neg e \vee \neg d\right) \Leftrightarrow \left(a \vee b \vee c \vee \neg e \vee \neg d\right)
+	\end{split}
+\]
+в данном случае КНФ также является и ДНФ.
+
+Построим отрицание:
+
+\[
+	\neg \left(a \vee b \vee c \vee \neg e \vee \neg d\right) = \left( \neg a \wedge \neg b \wedge \neg c \wedge e \wedge d \right)
+\]
+
+Рассматриаем второе выражение, выделим в нем простые высказывания:
+
+\begin{itemize}
+\item $a$ - Платон был в Египте
+
+\item $b$ - Платон видел пирамиды в Египте
+
+\item $c$ - пирамиды очень заинтересовали Платона
+
+\item $d$ - кто-то обратил внимание Платона на пирамиды
+
+\item $e$ - Платону объяснили устройство пирамид
+
+\item $f$ - пирамиды произвели на Платона неизгладимое впечатление
+\end{itemize}
+
+\[
+	\left(a \wedge b \supset c\right) \vee \left(d \wedge e \supset f\right)
+\]
+
+Формула истинна, например, на следующих интерпритациях:
+
+\begin{center}
+\begin{tabular}[t]{|c|c|c|c|c|c|}
+\hline
+        a & b & c & d & e & f \\
+\hline
+        1 & 1 & 1 & 0 & 0 & 0 \\
+\hline
+        1 & 0 & 1 & 0 & 0 & 0\\
+\hline
+        1 & 1 & 0 & 1 & 1 & 1\\
+\hline
+\end{tabular}
+\end{center}
+
+Ложна она, например, на следующей интерпритации:
+
+\begin{center}
+\begin{tabular}[t]{|c|c|c|c|c|c|}
+\hline
+        a & b & c & d & e & f \\
+\hline
+        1 & 1 & 0 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+
+Приведение формулы к КНФ:
+
+\[
+	\begin{split}
+        	& \left(\left(a \wedge b \supset c\right) \vee \left(d \wedge e \supset f\right)\right) \Leftrightarrow \left(\neg \left(a \wedge b\right) \vee c\right) \vee \left(\neg \left(d \wedge e\right) \vee f\right) \Leftrightarrow \\
+		& \Leftrightarrow \left(\neg a \vee \neg b \vee c \vee \neg d \vee \neg e \vee f\right)
+	\end{split}
+\]
+
+в данном случае опять же получили ДНФ.
+
+Построим отрицание формулы:
+
+\[
+	\neg \left(\neg a \vee \neg b \vee c \vee \neg d \vee \neg e \vee f\right) = a \wedge b \wedge \neg c \wedge d \wedge e \wedge \neg f
+\]
+
+\end{Solution}
+
+\begin{Th}[о семантически эквивалентной замене]
+Пусть $A$,$B$ и $B'$ - пропозициональные формулы, $A'$ есть результат замены некоторого вхождения $B$ в $A$ на $B'$. Тогда если $B \sim B'$, то $A \sim A'$.
+\end{Th}
+
+\begin{Proof}
+
+Для доказательства потребуются следующие тавтологии:
+
+\begin{enumerate}
+\item $\left(A \equiv B\right) \Rightarrow \left(\neg A \equiv \neg B\right)$
+
+\item $\left(A \equiv B\right) \Rightarrow \left(A \vee C \equiv B \vee C\right)$
+
+\item $\left(A \equiv B\right) \Rightarrow \left(A \wedge C \equiv B \wedge C\right)$
+
+\item $\left(A \equiv B\right) \Rightarrow \left(\left(A \Rightarrow C\right) \equiv \left(B \Rightarrow C\right)\right)$
+
+\item $\left(A \equiv B\right) \Rightarrow \left(\left(C \Rightarrow A\right) \equiv \left(C \Rightarrow b\right)\right)$
+\end{enumerate}
+
+Доказательство проведем индукцией по построению формулы $A$. База индукции. Пусть формула $A$ совпадает с $B$, тогда $A'$ совпадает с $B'$, что влечет $A \sim A'$.
+
+Теперь пусть теорема доказана для компоненты $C$, если $A$ совпадает с $C$, то получаем базу индукции, в противном случае взможны следующие варианты:
+\begin{itemize}
+\item $A = \neg C$ - используем тавтологию (1)
+
+\item $A = С \vee D = D \vee C$ - используем тавтологию (2)
+
+\item $A = C \wedge D =  \wedge C$ - используем тавтологию (3)
+
+\item $A = C \Rightarrow D$ - используем тавтологию (4)
+
+\item $A = D \Rightarrow C$ - используем тавтологию (5)
+\end{itemize}
+
+\end{Proof}
+
+\end{document}
