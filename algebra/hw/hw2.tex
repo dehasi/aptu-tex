@@ -1,0 +1,108 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=2cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 2}
+
+\paragraph{1.1} Пусть $F,H \le G$. Докажите, что $F \cup H \le G$, если и только если $F \le H$ или $H \le F$.
+\begin{Proof}
+Покажем, что $F \cup H \le G \Rightarrow \left[\left(F \le H\right) \lor \left(H \le F\right)\right]$
+
+Предположим обратное, т. е. $\exists x \in H \setminus F$ и $\exists y \in F \setminus H$, тогда можно сказать, что $x^{-1} \in H \setminus F$, т. к.  противном случае он принадлежал бы $H \cap F$ и значит принадлежал бы $F$, что необходимо влечет $x \in F$, аналогичное утверждение справделиво и для $y$, т. е. $y^{-1} \in F \setminus H$. Рассмотрим элемент $z = xy \in H \cap F$, тогда можно сказать, что $y = x^{-1} z$ и $x = z y^{-1}$, но это значит, что $y \in H$ и $x \in F$, что не возможно, следовательно либо $F \le H$ либо $H \le F$.
+
+Покажем теперь, что $\left[\left(F \le H\right) \lor \left(H \le F\right)\right] \Rightarrow F \cup H \le G$.
+
+Это утерждение очевидно
+\[
+	\begin{split}
+		& \left|F\right| < \left|H\right| \Rightarrow F \cup H = H \Rightarrow F \cup H \le G \\
+		& \left|F\right| > \left|H\right| \Rightarrow F \cup H = F \Rightarrow F \cup H \le G \\
+		& \left|F\right| = \left|H\right| \Rightarrow F \cup H = F = H \Rightarrow F \cup H \le G
+	\end{split}
+\]
+\end{Proof}
+
+\paragraph{1.2} Пусть $H \le G$. Докажите, что $\left(G \setminus H\right) \cup \{1\} \le G$, если и только если $H = \{1\}$ или $H = G$.
+
+\begin{Proof}
+Покажем, что $\left(H=\{1\}\right) \lor \left(H = G\right) \Rightarrow \left(G \setminus H\right) \cup \{1\} \le G$.
+
+\[
+	\begin{split}
+		& H=\{1\} \Rightarrow \left(G \setminus H\right) \cup \{1\} = G \\
+		& H=G \Rightarrow \left(G \setminus H\right) \cup \{1\} = \{1\}
+	\end{split}
+\]
+
+Покажем теперь, что $\left(G \setminus H\right) \cup \{1\} \le G \Rightarrow \left[\left(H=\{1\}\right)\cup\left(H=G\right)\right]$
+
+Обозначим $F = \left(G \setminus H\right) \cup \{1\}$. Положим теперь, что $F,H \le G$, тогда по предыдущей задаче из того, что $G = F \cup H$ - группа, следует, что $F \le H$ или $H \le F$, т. е. либо $H = G$ либо $H = \{1\}$
+\end{Proof}
+
+\paragraph{1.3} Докажите, что для любого $n \in \mathbb{N}$ в группе $\mathbb{C}^*$ имеется ровно одна подгруппа порядка $n$ (а именно, группа $\mu_n$).
+
+\begin{Proof}
+Очевидно, что для любого натурального $n$ существует группа $\mu_n \in \mathbb{C}^*$ корней $n$-ой степени из единицы, покажем теперь, что эта группа единстенна.
+
+Предположим обратное и эта группа не единстенна, т. е. сущестует группа $H \le \mathbb{C}^*$, причем $\left|H\right| = n$ и $\mu_n \not= H$. Все элементы этой группы принадлежат единичному кольцу, покажем это. Пусть это не так и существует элемент $g \in H$ причем $\left|g\right| \not= 1$, тогда вместе с ним  $H$ включены и все различные степени $g$, а их бесконечное число, следовательно и порядок группы бесконечен.
+
+Далее, у группы $H$ сущестует система образующих элементов, т. е. $<g_1, g_2, ... ,g_k> = H$. Т. к. $\left|H\right| = n$ - конечное число, то $\forall g_i \exists t \in \mathbb{N} : {g_i}^{t}=1$, т. е. каждый из элементо порождает некоторую группу корней из едницы, но из того, что их объединение является подгруппой, согласно первой задче вытекает, что среди них есть подгруппа мощности $n$ включающая все остальные в качестве подгрупп, т. е. $H = \mu_n$
+\end{Proof}
+
+\paragraph{1.4} Пусть $F,H \le G$, $\left|F\right|,\left|H\right| < \infty$ И $\gcd{\left|F\right|}{\left|H\right|} = 1$. Докажите, что $F \cap H = \{1\}$
+
+\begin{Proof}
+Обозначим $I = F \cap H \le F$, тогда $\left(I \le F\right) \land \left(I \le H\right)$, и тогда $\left|I\right|$ делит как $\left|F\right|$ так и $\left|H\right|$, т. е. является их общим делителем и не может превышать 1, единственная группа из одного элемента это $\{1\}$.
+\end{Proof}
+
+\paragraph{1.5} Докажите, что любая бесконечная группа имеет бесконечно много подгрупп.
+
+\begin{Proof}
+
+\end{Proof}
+
+\end{document}
