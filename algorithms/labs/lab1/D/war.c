@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+#define CUTOFF 10
+
+struct shelter_t {
+	int num;
+	unsigned long pos;
+};
+
+int bin_search(struct shelter_t *array, int size, int pos)
+{
+	int left = 0;
+	int right = size-1;
+	int middle;
+
+	assert(size != 0);
+
+	if (array[0].pos > pos) return 0;
+	else if (array[right].pos < pos) return right;
+
+	while (right-left>0)
+	{
+		middle = left + ((right-left)>>1);
+
+		if (pos>array[middle].pos)
+			left = middle+1;
+		else if (pos<array[middle].pos)
+			right = middle;
+		else
+			return middle;
+	}
+
+	if (array[right].pos-pos>pos-array[right-1].pos)
+		return right-1;
+	else
+		return right;
+}
+
+void insertation_sort(struct shelter_t *array,
+			int left, int right)
+{
+	int i, j;
+	struct shelter_t temp;
+	for (j = left + 1; j < right; j++) {
+		i = j - 1;
+		temp = array[j];
+		while ((i >= 0) && (array[i].pos>temp.pos)) {
+			array[i+1] = array[i];
+			i--;
+		}
+		array[i+1] = temp;
+	}
+}
+
+void quick_sort(struct shelter_t *array,
+			int left, int right)
+{
+	int l = left, r = right-1;
+	struct shelter_t temp;
+	unsigned long p;
+
+	p = array[l + (r-l)/2].pos;
+
+	do {
+		while (array[l].pos < p) l++;
+		while (array[r].pos > p) r--;
+
+		if (l <= r) {
+			temp = array[l];
+			array[l] = array[r];
+			array[r] = temp;
+			l++; r--;
+		}		
+	} while (l <= r);
+
+	if (r - left > CUTOFF)
+		quick_sort(array, left, r+1);
+	else if (r > left)
+		insertation_sort(array, left, r+1);
+
+	if (right - l > CUTOFF)
+		quick_sort(array, l, right);
+	else if (l < right-1)
+		insertation_sort(array, l, right);
+}
+
+inline int init_cities(unsigned long ** cities)
+{
+	int count, i;
+
+	scanf("%d\n", &count);
+	*cities = (unsigned long *)
+		malloc(count*sizeof(unsigned long));
+
+	for (i = 0; i < count; i++)
+		scanf("%ld", (*cities + i));
+
+	scanf("\n");
+
+	return count;
+}
+
+inline int init_shelters(struct shelter_t ** shelters)
+{
+	int count, i;
+
+	scanf("%d\n", &count);
+	*shelters = (struct shelter_t *)
+		malloc(count*sizeof(struct shelter_t));
+
+	for (i = 0; i < count; i++) {
+		scanf("%ld", &((*shelters + i)->pos));
+		(*shelters + i)->num = i+1;
+	}
+
+	return count;
+}
+
+int main()
+{
+	int count_of_cities, count_of_shelters, city, shelter;
+	struct shelter_t * shelters;
+	unsigned long * cities;
+
+	count_of_cities = init_cities(&cities);
+	count_of_shelters = init_shelters(&shelters);
+
+	quick_sort(shelters, 0, count_of_shelters);
+
+	for (city = 0; city < count_of_cities; city++) {
+		shelter = bin_search(shelters, count_of_shelters,
+						cities[city]);
+		printf("%d ", shelters[shelter].num);
+	}
+
+	free(cities);
+	free(shelters);
+
+	return 0;
+}
