@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define CUTOFF 10
+#define CUTOFF 40
 
 struct shelter_t {
 	int num;
@@ -61,7 +61,7 @@ void quick_sort(struct shelter_t *array,
 	struct shelter_t temp;
 	unsigned long p;
 
-	p = array[l + (r-l)/2].pos;
+	p = array[l + rand()%(right-left)].pos;
 
 	do {
 		while (array[l].pos < p) l++;
@@ -123,6 +123,8 @@ int main()
 	int count_of_cities, count_of_shelters, city, shelter;
 	struct shelter_t * shelters;
 	unsigned long * cities;
+
+	srand(time(NULL));
 
 	count_of_cities = init_cities(&cities);
 	count_of_shelters = init_shelters(&shelters);
