@@ -166,6 +166,79 @@
 построить для них производящие функции вышеуказанного вида.
 
 \begin{Solution}
+Для начала рассмотрим простой способ построения двумерной производящей функции для биномиальных коэффициентов:
+\[
+	\begin{split}
+		&\sum_{n=0}^{\infty}\left(\sum_{k=0}^n f\left(t,x\right) x^k\right) \frac{t^n}{n!} = \sum_{n=0}^{\infty}\left(\sum_{k=0}^n \binom{n}{k} \right) \frac{t^n}{n!} \\
+		&\sum_{n=0}^{\infty}\left(1+x\right)^n \frac{t^n}{n!} = e^{\left(1+x\right)t}
+	\end{split}
+\]
+
+Теперь когда мы нашли простое решение, попробуем его повторить через рекуррентное соотношение. Для начала рассмотрим процесс интегрирования и дифференцирования экспоненциальных степенных рядов:
+\[
+	\begin{split}
+		& \int{\left(a_0 + a_1 x + a_2 \frac{x^2}{2} + a_3 \frac{x^3}{3!} + ... \right)} = a_0 x + a_1 \frac{x^2}{2} + a_2 \frac{x^3}{2 \cdot 3} + a_3 \frac{x^4}{3! \cdot 4} + ... = \\
+		& = a_0 x + a_1 \frac{x^2}{2} + a_2 \frac{x^3}{3!} + a_3 \frac{x^4}{4!} + ... \\
+		& \left(a_0 + a_1 x + a_2 \frac{x^2}{2} + a_3 \frac{x^3}{3!} + ... \right)' = a_1 + a_2 x + a_3 \frac{x^2}{2} + ...
+	\end{split}
+\]
+таким образом интегрирование и дифференцирования для экспоненциальных функций есть просто <<сдвиг>>.
+
+Введем обозначение:
+\[
+	f_{n} \left(x\right) = \sum_{k=0}^n \binom{n}{k} x^k
+\]
+
+\[
+	\begin{split}
+		& \binom{n+1}{k+1} = \binom{n}{k+1} + \binom{n}{k} \Leftrightarrow \\
+		& \Leftrightarrow x^{k+1} \binom{n+1}{k+1} = x^{k+1} \binom{n}{k+1} + x^{k+1} \binom{n}{k} \Leftrightarrow \\
+		& \Leftrightarrow \sum_{k=0}^{n} \binom{n+1}{k+1} x^{k+1} = \sum_{k=0}^{n} \binom{n}{k+1} x^{k+1} + \sum_{k=0}^{n} \binom{n}{k} x^{k+1} \Leftrightarrow \\
+		& \Leftrightarrow f_{n+1} \left(x\right) - 1 = f_{n}\left(x\right) - 1 + x f_{n} \left(x\right) \Leftrightarrow \\
+		& \Leftrightarrow f_{n+1}\left(x\right) = f_{n}\left(1+x\right) \Leftrightarrow \left(\sum_{n=0}^{\infty} f_{n+1}\left(x\right) \frac{t^{n+1}}{\left(n+1\right)!}\right)' = \left(\left(1+x\right) \sum_{n=0}^{\infty} \frac{t^{n+1}}{\left(n+1\right)!}\right)' \Leftrightarrow \\
+		& \Leftrightarrow F\left(t, x\right) = \left(1+x\right) F\left(t, x\right) \Leftrightarrow \frac{\partial F \left(t,x\right)}{\partial t} = \left(1+x\right) F\left(t,x\right) \Leftrightarrow \\
+		& \Leftrightarrow \frac{\partial F\left(t,x\right)}{F\left(t,x\right)} = \left(1+x\right) \partial t \Leftrightarrow \partial \ln{F\left(t, x\right)} = \partial \left(1+x\right)t \Leftrightarrow \\
+		& \Leftrightarrow F\left(t,x\right) = e^{\left(1+x\right)t}
+	\end{split}
+\]
+
+Теперь рассмотрим числа Стирлинга:
+\[
+	\sum_{n=0}^{\infty} \left(\sum_{k=0}^n S\left(n,k\right) x^k\right) \frac{t^n}{n!} = \sum_{n=0}^{\infty} \left(\sum_{k=0}^{\infty} S\left(n,k\right) x^k\right) \frac{t^n}{n!} = \sum_{k=0}^{\infty} \left(\sum_{n=0}^{\infty} S\left(n,k\right) \frac{t^n}{n!}\right) x^k
+\]
+Обозначим:
+\[
+	f_k \left(t\right) = \sum_{n=0}^{\infty} S\left(n,k\right) \frac{t^n}{n!}
+\]
+Теперь рассмотрим рекуррентное соотношение:
+\[
+	\begin{split}
+		& S\left(n,k\right) = S\left(n-1,k-1\right) + k S\left(n-1,k\right) \Leftrightarrow S\left(n,k\right)\frac{t^n}{n!} = S\left(n-1,k-1\right)\frac{t^n}{n!} + k S\left(n-1,k\right) \frac{t^n}{n!} \Leftrightarrow \\
+		& \Leftrightarrow \sum_{n=0}^{\infty} S\left(n,k\right) \frac{t^n}{n!} = \sum_{n=0}^{\infty} S\left(n-1,k-1\right) \frac{t^n}{n!} + k \sum_{n=0}^{\infty} S\left(n-1,k\right) \frac{t^n}{n!} \Leftrightarrow \\
+		& \Leftrightarrow f_{k}'\left(t\right) = f_{k-1}'\left(t\right) + k f_k\left(t\right)
+	\end{split}
+\]
+
+Чтобы решить это уравнение рассмотрим частный случай $k=1$:
+\[
+	f_1'\left(t\right) = 1 + f_1\left(t\right)
+\]
+решение очевидно:
+\[
+	f_1\left(t\right) = e^t - 1
+\]
+Очевидно, что это решение не подходит для больших $k$, но можно немного его подправить:
+\[
+	f_k\left(t\right) = \frac{1}{k!} \left(e^t - 1\right)^k
+\]
+проверим, что оно является решение нашего уравнения:
+\[
+	\frac{1}{\left(k-1\right)!}\left(e^t - 1\right)^{k-1} e^t = \frac{1}{\left(k-1\right)!} \left(e^t - 1\right)^{k-1} + k \frac{1}{k!}\left(e^t - 1\right)^k = \frac{1}{\left(k-1\right)!} \left(e^t - 1\right)^{k-1} e^t
+\]
+Далее суммируем по всем $k$:
+\[
+	\sum_{k=0}^{\infty} \frac{1}{k!}\left(e^t - 1\right)k x^k = e^{\left(e^t-1\right)x}
+\]
 \end{Solution}
 
 \paragraph{Здание 3.} В осеннем семестре у преподавателя $n$ рабочих дней, и он хочет поделить его на три части. В первой части (первые $k_1$ дней) он хочет какое-то число $i_1$ дней ($0 \le i_1 \le k_1$) провести в командировках, во второй части (следующие $k_2$ дней) он хочет четное число дней $2 i_2$, $0 \le i_2 \le \lfloor \frac{k_2}{2} \rfloor$, посвятить лабораторным работам, а втретьей части он хочет произвольное нечетное число дней $2 i_3 + 1$ отдать на самостоятельную работу студентов. В остальные дни он собирается читать лекции. Сколькими способами пеаодаватель может спланировать свой осенний семестр? А если вместо линейного разбиения множества $n$ рабочих дней проподаватель использует произвольное разбиение этого множества на три попарно непересекающихся подмножества?
@@ -241,6 +314,72 @@
 получаем ответ:
 \[
 	T\left(n\right) = \frac{6^{n-2}}{4} + \frac{4^{n-1}}{2}
+\]
+\end{Solution}
+
+\paragraph{Задание 4.} На платцу стоят в одну линию $n$ солдат. Дежурный офицер разбивает эту линию на произвольное число $k$ Непустых отрядов (например, так: первые три солдата, следующие за ними четыре солдата, оставшиеся $n-7>0$ солдат). Затем он в каждом отряде назначает командира. Найти число $h_n$ способов сделать эту операцию.
+
+\begin{Solution}
+Назначить командира в отряде из $m$ солдат можно ровно $m$ - способами, с учетом недопустимости пустых отрядов получаем последовательность:
+\[
+	1, 2, 3, 4, 5 ...
+\]
+производящая функция следующая:
+\[
+	\frac{1}{\left(1-x\right)^2}
+\]
+обращаем внимание на то, что требуемый коэффициент стоит при $x^{m-1}$
+Перемножаем $k$ таких производящих функций:
+\[
+	\frac{1}{\left(1-x\right)^{2k}} = \left(1-x\right)^{-2k} = \sum_{i=0}^{\infty} \left(\binom{2k}{i}\right) x^i
+\]
+таким образом число способов сформировать $k$ отрядов из $n$ человек равно коэффициенту при $x^{n-1}$:
+\[
+		\left(\binom{2k}{n-1}\right)
+\]
+\end{Solution}
+
+\paragraph{Задание 5.} Найти ответ в предыдущей задаче в случае, если солдаты не стоят в одну линию. Иными словами, если у фомцера имеется возможность выбирать $k$ произвольных неустых подмножеств из $n$-элементного множества солдат.
+
+\begin{Solution}
+Решение задачи отличается использованием экспоненциальных производящих функций. Количество способов выбрать одного командира из $m$ солдат равно $m$, таким образом нужно построить экспоненциальную производящую функцию для последовательности:
+\[
+	1, 2, 3, 4, 5, ...
+\]
+\[
+	\sum_{i=0}^{\infty} \left(i+1\right) \frac{x^i}{i!} = \left(\sum_{i=0}^{\infty} \left(i+1\right)\frac{x^{i+1}}{\left(i+1\right)!}\right)' = \left(x \sum_{i=0}^{\infty}\frac{x^i}{i!}\right)' = \left(x e^x\right)'
+\]
+откуда получаем:
+\[
+	F\left(x\right) = e^x \left(x+1\right)
+\]
+При разбиении на $k$ отрядов получаем:
+\[
+	e^{kx} \left(x+1\right)^k = H\left(x\right) G\left(x\right)
+\]
+распишем суммы:
+\[
+	\begin{split}
+		& H\left(x\right) = \sum_{i=0}^{\infty} \frac{k^i x^i}{i!} \\
+		& G\left(x\right) = \sum_{i=0}^{\infty} \binom{k}{i} x^i = \sum_{i=0}^{\infty} \frac{\left(k\right)_i}{i!} x^i
+	\end{split}
+\]
+по правилу перемножения экспоненциальных функций получаем при $x^{n-1}$:
+\[
+	\sum_{i=0}^{n-1} \binom{n-1}{i} k^i \left(k\right)_i
+\]
+\end{Solution}
+
+\paragraph{Задание 6.} На плацу стоят в одну линию $n$ солдат. Дежурный офицер разбивает эту линию на произвольное число $k$ непустых отрядов (например, так: первые три солдата, следующие четыре, оставшиеся $n-7>0$ солдат). Затем он выбирает некоторое подмножество (возможно, пустое) вновь сформированных отрядов и отправляет их на дежурство. Сколькими способами он может это сделать.
+
+\begin{Solution}
+В одном из предыдущих заданий я постарался получить количество способов сформировать $k$ отрядов из $n$ солдат:
+\[
+	\left(\binom{2k}{n-1}\right)
+\]
+каждый из полученных $k$ отрядов может быть отправлен на дежурство, или нет, т. е. всего $2^k$ вариантов:
+\[
+	2^k \left(\binom{2k}{n-1}\right)
 \]
 \end{Solution}
 \end{document}
