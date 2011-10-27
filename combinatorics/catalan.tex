@@ -73,3 +73,40 @@
 	\frac{1}{\left(1-x\right)^3}
 \]
 получем то же самое, но с другой стороны)
+
+\section{Замкнутая формуал для чисел Каталана}
+
+Ну со вкусностями покончено, я вообще не понимаю как они сюда попали, продолжим. Итак для чисел Каталана справедлива формула:
+
+\[
+	c_{n+1} = c_0 c_{n} + c_1 c_{n-1} + c_2 c_{n-2} + ... + c_{n-1} c_1 + c_n c_0
+\]
+
+не трудно увидеть, что оно похоже на произведение обыкновенных производящих функций, ну так и поступим, составим производящую функцию для чисел Кталана:
+\[
+	f\left(x\right) = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + ...
+\]
+Домножим рекуррентное соотношение на $x^{n+1}$ и просуммируем по всем $n$:
+\[
+	\begin{split}
+		& \sum_{n=0}^{\infty} c_{n+1} x^{n+1} = \sum_{n=0}^{\infty} \left[\sum_{k=0}^{n} c_k c_{n-k}\right] x^{n+1} \Leftrightarrow \\
+		& \Leftrightarrow f\left(x\right) - c_0 = x f\left(x\right) f\left(x\right) \\
+		& f\left(x\right) = \frac{1 \pm \sqrt{1-4x}}{2x}
+	\end{split}
+\]
+ну теперь играем в угадайку, и угадываем, что правильный знак $-$, вообщем есть и формальное обосновнаие, но оно неинтересное и вообще страшное... так что пусть мы угадали:
+\[
+	\begin{split}
+		& f\left(x\right) = \frac{1}{2x} \left(1 - \left(1 - 4x\right)^{-\frac{1}{2}}\right) = \\
+		& = \frac{1}{2x} \left(1 - 1 - \sum_{n=1}^{\infty} \frac{\frac{1}{2} \left(\frac{1}{2}-1\right)\left(\frac{1}{2}-2\right) ... \left(\frac{1}{2}-n+1\right)}{n!} \left(-4x\right)^n\right) = \\
+		& = \frac{1}{2x} \sum_{n=1}^{\infty} \frac{\frac{1}{2} \frac{1}{2} \frac{3}{2} \frac{5}{2} ... \left(n-\frac{3}{2}\right)}{n!} 2^{2n} x^n = \frac{1}{2x}\sum_{n=1}^{\infty}\frac{1 \cdot 3 \cdot 5 \cdot ... \cdot \left(2n-3\right)}{n!} 2^n x^n = \\
+		& = \sum_{n=1}^{\infty} \frac{1 \cdot 3 \cdot 5 \cdot ... \cdot \left(2n-3\right)}{n!} 2^{n-1} x^{n-1} = \\
+		& = \sum_{n=1}^{\infty} \frac{\left(n-1\right)! 1 \cdot 3 \cdot 5 \cdot ... \cdot \left(2n-3\right)}{n!\left(n-1\right)!} 2^{n-1}x^{n-1} = \\
+		& = \sum_{n=1}^{\infty} \frac{2 \cdot 4 \cdot 6 \cdot ... \cdot \left(2n-2\right) \cdot 1 \cdot 3 \cdot 5 \cdot ... \cdot \left(2n-3\right)}{n \left(\left(n-1\right)!\right)^2} x^{n-1} = \\
+		& = \sum_{n=1}^{\infty} \frac{\left(2n-2\right)!}{n \left(n-1\right)! \left(n-1\right)!} x^{n-1} = \sum_{n=0}^{\infty} \frac{2n!}{\left(n+1\right) n! n!} x^n = \sum_{n=0}^{\infty} \frac{1}{n+1} \binom{2n}{n} x^n
+	\end{split}
+\]
+выбераем из производящей функции нужное значение:
+\[
+	c_n = \frac{1}{n+1} \binom{2n}{n}
+\]
