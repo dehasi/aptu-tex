@@ -6,7 +6,7 @@
 
 struct shelter_t {
 	int num;
-	unsigned long pos;
+	unsigned int pos;
 };
 
 int bin_search(struct shelter_t *array, int size, unsigned int pos)
@@ -46,7 +46,7 @@ void insertion_sort(struct shelter_t *array,
 	for (j = left + 1; j < right; j++) {
 		i = j - 1;
 		temp = array[j];
-		while ((i >= 0) && (array[i].pos > temp.pos)) {
+		while ((i >= left) && (array[i].pos > temp.pos)) {
 			array[i + 1] = array[i];
 			i--;
 		}
@@ -59,7 +59,7 @@ void quick_sort(struct shelter_t *array,
 {
 	int l = left, r = right - 1;
 	struct shelter_t temp;
-	unsigned long p;
+	unsigned int p;
 
 	p = array[l + rand() % (right - left)].pos;
 
@@ -86,21 +86,21 @@ void quick_sort(struct shelter_t *array,
 		insertion_sort(array, l, right);
 }
 
-inline int init_cities(unsigned long ** cities)
+inline int init_cities(unsigned int **cities)
 {
 	int count, i;
 
 	scanf("%d\n", &count);
-	*cities = (unsigned long *)
-		malloc(count * sizeof(unsigned long));
+	*cities = (unsigned int *)
+		malloc(count * sizeof(unsigned int));
 
 	for (i = 0; i < count; i++)
-		scanf("%ld", (*cities + i));
+		scanf("%d", (*cities + i));
 
 	return count;
 }
 
-inline int init_shelters(struct shelter_t ** shelters)
+inline int init_shelters(struct shelter_t **shelters)
 {
 	int count, i;
 
@@ -109,7 +109,7 @@ inline int init_shelters(struct shelter_t ** shelters)
 		malloc(count * sizeof(struct shelter_t));
 
 	for (i = 0; i < count; i++) {
-		scanf("%ld", &((*shelters + i)->pos));
+		scanf("%d", &((*shelters + i)->pos));
 		(*shelters + i)->num = i + 1;
 	}
 
@@ -119,8 +119,8 @@ inline int init_shelters(struct shelter_t ** shelters)
 int main()
 {
 	int count_of_cities, count_of_shelters, city, shelter;
-	struct shelter_t * shelters;
-	unsigned long * cities;
+	struct shelter_t *shelters;
+	unsigned int *cities;
 
 	srand(time(NULL));
 
