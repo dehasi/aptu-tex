@@ -1,0 +1,114 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=1.5cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 3}
+
+\paragraph{Задание 11.} Опишите алгоритм проверки выводимости в исчислении $\mathbb{G}$, не использующий семантических понятий. Такой алгоритм должен по произвольной входной секвенции $S$ выдавать <<выводима>>, если $S$ выводима, а иначе выдавать <<невыводима>>. Докажите правильность описанного алгоритма (такое доказательство может использовать семантические понятия).
+
+\begin{Solution}
+Для любой формулы члена секвенции, в которой имеются связки контрприменяем правила вывода (в зависимости от связки):
+\[
+	\begin{split}
+		&\frac{\Gamma \rightarrow \Delta, A}{\Gamma, \neg A \rightarrow \Delta} \left(\neg \rightarrow\right) \\
+		&\frac{\Gamma, A \rightarrow \Delta}{\Gamma \rightarrow \Delta, \neg A} \left(\rightarrow \neg\right) \\
+		&\frac{\Gamma, A, B \rightarrow \Delta}{\Gamma, A \land B \rightarrow \Delta}\left(\land \rightarrow\right) \\
+		&\frac{\Gamma \rightarrow \Delta, A; ~~~ \Gamma \rightarrow \Delta, B}{\Gamma \rightarrow \Delta, A \land B} \left(\rightarrow \land\right) \\
+		&\frac{\Gamma, A \rightarrow \Delta; ~~~ \Gamma, B \rightarrow \Delta}{\Gamma, A \lor B \rightarrow \Delta} \left(\lor \rightarrow\right) \\
+		&\frac{\Gamma \rightarrow \Delta, A, B}{\Gamma \rightarrow \Delta, A, B}\left(\rightarrow\lor\right) \\
+		&\frac{\Gamma \rightarrow \Delta, A; ~~~ \Gamma, B \rightarrow \Delta}{\Gamma, A \supset B \rightarrow \Delta}\left(\supset \rightarrow\right) \\
+		& \frac{\Gamma, A \rightarrow \Delta, B}{\Gamma \rightarrow \Delta, A \supset B}\left(\rightarrow\supset\right)
+	\end{split}
+\]
+Осуществляем контрприменение до тех пор, пока не останется ни одной связки. Далее проверяем каждый полученный лист на соответствие одной из аксиом:
+\[
+	\begin{split}
+		& \Gamma, A \rightarrow \Delta, A \\
+		& \Gamma, F \rightarrow \Delta \\
+		& \Gamma \rightarrow \Delta, T
+	\end{split}
+\]
+если каждый лист соответствует аксиоме, то секвенция выводима в исчислении $\mathbb{G}$, иначе секвенция не выводима.
+
+Этот алгоритм конечен потому, что любая секвенция содержит конечное число формул, каждая из которых содержит конечное число связок, а за каждый шаг мы удаляем одну связку (особый случай - ветвления дерева, но они не могут продолжаться бесконечно). Алгоритм дает правильный результат, так как для любой интерпритации $M$ при описанных правилах вывода справедливо утверждение, что $M$ - контрпример для секвенции-заключения, если и только если она является контрпримером хотябы для одной секвенции-посылки, это утверждение распространяется на все дерево поиска вывода, таким образом если мы нашли лист, по которому можно составить контрпример, то и исходная секвенция не выводима, если же всем листьям соответствуют аксиомы, то не существует контрпримера и следовательно секвенция выводима в исчислении $\mathbb{G}$
+\end{Solution}
+
+\paragraph{Задание 12.} Существует ли полиномиальный алгоритм проверки выводимости в исчислении $\mathbb{G}$?
+
+\begin{Solution}
+Предложенный выше алгоритм не полиномиален, так как при контрприменении правил введения дизъюнкции и импликации в антецедент, а также при контрприменении правила введения конъюнкции в сукцедент дерево поиска вывода ветвится, если правило приходится применять часто, то сложность алгоритма не полимиальна. С другой стороны каждая секвенция представима в виде формулы и выводимость секвенции означает общезначимость формулы, проверить общезначимость. Алгоритма проверки общезначимости для произвольной функции я не знаю (подразумеваю, что его нет).
+\end{Solution}
+
+\paragraph{Задание 13.} Сформулируйте допустимые правила введения штриха Шеффера в антецедент и сукцедент секвенции, доказав допустимость этих правил.
+
+\begin{Solution}
+Для штриха Шеффера справедливо:
+\[
+	A | B = \neg\left(A \land B\right)
+\]
+теперь выведем доспутимые правила введения связки выше в антицедент:
+\[
+	\begin{split}
+		&\frac{\frac{\Gamma \rightarrow A, \Delta; ~~~ \Gamma \rightarrow B, \Delta}{\Gamma \rightarrow A\land B, \Delta}}{\Gamma, \neg\left(A \land B\right) \rightarrow \Delta} \\
+	\end{split}
+\]
+теперь выведем допустимые правила введения связки выше в сукцедент:
+\[
+	\begin{split}
+		& \frac{\frac{\Gamma, A, B \rightarrow \Delta}{\Gamma, \left(A \land B\right) \rightarrow \Delta}}{\Gamma \rightarrow \neg\left(A \land B\right), \Delta}
+	\end{split}
+\]
+Так как при выводе мы пользовались только правилами вывода исчисления, полученные правила допустимы.
+\end{Solution}
+
+\paragraph{Задание 14.} Верно ли, что в исчислении $\mathbb{G}$ и в исчислении, отличающемся от $\mathbb{G}$ только тем, что в схеме аксиом $\Gamma, A \rightarrow \Delta, A$ формула $A$ является перемнной, выводимы одни и те же секвенции?
+
+\begin{Solution}
+Да утверждение верно, покажем это. Пусть мы построили дерево поиска вывода для некоторой секвенции, в каждом листе которой находится аксиома исчесления $\mathbb{G}$. Не существует контрпримера для исходной секвенции (в противном случае она была бы не выводима в исчислении $\mathbb{G}$), а значит не существует контрпримера и для листьев дерева поиска вывода. Продолжим вывод устраняя связки из формул, пока связок вовсе не останется. Во вновь полученном дереве поиска вывода все листья соответствуют аксиомам, так как в противном случае для них можно было бы составить контрпример, что невозможно, так как это бы означало, что существует контрпример для исходной секвенции, следовательно каждый лист является аксимомой. Таким образом каждая формула из $\mathbb{G}$ выводима в новом исчислении. Обратное также верно, так как аксиома нового исчисления - частный случай аксиомы $\mathbb{G}$.
+\end{Solution}
+
+\end{document}
