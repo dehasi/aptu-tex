@@ -147,32 +147,41 @@
 \end{itemize}
 
 \begin{Solution}
-Докажем для пункта $(a)$:
+Докажем для пункта $(a)$. Из семантики записи из истинности утверждения посылки в некоторой интерпритации $M$ и оценке $\nu$ можно заключить, что $\left|\forall y P\left(x,y\right)\right|_{M, \nu_{\alpha}^x} = \left|\forall y P\left(\alpha,y\right)\right|_{M,\nu} = \left|P\left(\alpha,y\right)\right)_{M,\nu_{\beta}^y} = \left|P\left(\alpha,\beta\right)\right| = 1$, где $\beta$ - любой элемент носителя, и $\alpha$ - какой-то фиксированный элемент носителя, но в этой же интерпритации оценке для следствия получаем:
 \[
-	\begin{split}
-		& \exists x \forall y P\left(x,y\right) \supset \forall y \exists x P\left(x,y\right) \sim \forall y \exists x \left(\exists x \forall y P\left(x,y\right) \supset P\left(x,y\right)\right) \sim \\
-		& \sim \forall y \exists x \forall x \left(\forall y P\left(x,y\right) \supset P\left(x,y\right)\right) \sim \forall y \exists x \forall x \exists y \left(P\left(x,y\right) \supset P\left(x,y\right)\right) \sim \\
-		& \sim \forall y \exists x \forall x \exists y \mathbb{T} \sim \mathbb{T}
-	\end{split}
+	\left|\forall y \exists x P\left(x,y\right)\right| = \left|\exists x P\left(x, \beta'\right)\right|
 \]
+где $\beta'$ - любой элемент носителя, но истинностное значение последнего равно 1, так как если вместо $x$ подставить $\alpha$, при любом значении $\beta'$ из носителя.
 
-докажем для пункта $(b)$:
-\[
-	\begin{split}
-		& \forall y \exists x P\left(x,y\right) \supset \exists x \forall y P\left(x,y\right) \sim \exists x \forall y \left(\forall y \exists x P\left(x,y\right) \supset P\left(x,y\right)\right) \sim \\
-		& \sim \exists x \forall y \exists y \forall x \left(P\left(x,y\right) \supset P\left(x,y\right)\right) \sim \exists x \forall y \exists y \forall x \mathbb{T} \sim \mathbb{T}
-	\end{split}
-\]
+Если же истинностное значение посылки ложно, то все утверждение истинно, и на этом рассмотрение данного случая можно закончить.
+
+Покажем для пункта $(b)$, что существует интерпритация и оценка, в которой формула ложна. Рассмотрим язык элементарной арифметики с двуместным предикатом $P\left(x,y\right)$. $P\left(x,y\right)$ - истинно, если $x \not= 0$ и $x \vdots y$ ($y$ - делтель $x$ или $y = 0$).
+
+Посылка очевидно истинна, так как любого $\alpha \not= 0$ существует целое неотрицательное число, делителем которого он является (например, $P\left(k\alpha,\alpha\right)$ - истинно), а при $\alpha = 0$ достаточно положить $\beta \in \mathbb{N}$, чтобы $\left|P\left(\beta,\alpha\right)\right| = 1$ т. е. получаем истинну.
+
+Следствие же ложно, так как для любого $\alpha \in \mathbb{N}$, имеем $\left|P\left(\alpha,\alpha + S0\right)\right| = 0$, т. е. $\left|\forall y P\left(\alpha, y\right)\right| = 0$, а для $\alpha = 0$ имеем $\left|\forall y P\left(0,y\right)\right| = 0$, т. к. независимо от $y$ $P\left(0,y\right) = \mathbb{F}$, то есть опять имеем противоречие - посылка истинна, а следствие ложно.
 \end{Solution}
 
 \paragraph{Задание 18.} Укажите и обоснуйте (разумно слабые) условия на формулу $A$, переменную $x$ и терм $t$, при которых формула
 \[
 	\forall x A \supset \left[A\right]_{t}^{x}
 \]
-истинна во всякой интерпритации при лбой оценке. Если это возможно, укажите конкретные формулу $A$, переменную $x$, терм $t$, интерпритацию и оценку, при которых вормула ложна.
+истинна во всякой интерпритации при любой оценке. Если это возможно, укажите конкретные формулу $A$, переменную $x$, терм $t$, интерпритацию и оценку, при которых формула ложна.
 
 \begin{Solution}
-Все выражение ложно в том и только том случае, если посылка истинна, а следствие ложно. Далее так как $t$ - терм, то он является либо предметной переменной, либо $n$-местным функционльным символом, которому при любой интерпритации $M$ и оценке $\nu$ сопоставляется элемент из носителя (как и предметной переменной $x$), но из семантики формулы $\forall x A$ следует, что для любого элемента $\alpha$ из носителя $\left|A\right|_{M,\nu_{\alpha}^{t}} = 1$, следовательно, при любой замене $x$ на $t$ получаем истинностное значение $1$ в интерпритации.
+Рассмотрим в языке элементарной арифметики формулу:
+\[
+	\forall x \exists y \left[y \ge x \land y\not=0\right]
+\]
+формула выражет утверждение, что для любого неотрицательного целого числа существует натуральное большее или равное самому числу, очевидно утверждение верно, достаточно прибавит единицу к исходному числу.
+
+Заменим теперь $x$ на терм $y+y$, тогда получим формулу:
+\[
+	\exists y \left[y \ge y+y \land y\not=0\right]
+\]
+Данная формула очевидно ложна, так как $y \ge y+y$ только в случае $y=0$, нопри это ложно $y\not=0$.
+
+Отсюда можно заключить, что для безопасной замены $x$ на $t$ необходимо, чтобы $t$ не содержал связанных кванторами переменных входящих в $A$, чтобы избежать коллизий перемнных, на которые наложены кванторные условия.
 \end{Solution}
 
 \end{document}
