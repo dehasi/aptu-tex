@@ -1,0 +1,241 @@
+План выполнения:
+
+Operator    : Sort
+Attributes  : PlayerNo, LeagueNo
+Order       : LeagueNo asc
+Cardinality : 2.0 Records
+Cost        : 9.0 Logical Reads
+
+Operator    : Project
+Attributes  : PlayerNo,LeagueNo
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : Filter
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Condition   : Town = 'Stratford'
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : TableScan
+Table       : Players
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+__ STATISTICS _________________
+
+   Table Players
+         NPag = 3, NReg = 14
+      Index pk_Players
+         Attributes = [Players.PlayerNo asc]
+         NLeaf = 1, NKeys = 14, Clustered = false
+      Index PLAYER_Idx
+         Attributes = [Players.Name asc, Players.Initials asc]
+         NLeaf = 1, NKeys = 14, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 32 ms (min: 0, sec: 0, ms: 32)
+   Result cardinality = 2.0 Records
+   Cost               = 9.0 Logical Reads
+   Order              = [Players.LeagueNo asc]
+
+
+   Sort(
+        Project(
+                Filter(
+                       TableScan(
+                                 Players
+                                )
+                       Town = 'Stratford'
+                      )
+                {PlayerNo,LeagueNo}
+               )
+        {LeagueNo asc}
+       )
+____________________
+
+
+	PlayerNo    LeagueNo  
+	____________________
+	7           null      
+	39          null      
+	83          1608      
+	2           2411      
+	57          6409      
+	100         6524      
+	6           8467      
+	____________________
+	No of records 7
+
+
+	Access Plan Generation Time = 64 ms (min: 0, sec: 0, ms: 64)
+	Access Plan Execution Time  = 104 ms (min: 0, sec: 0, ms: 104)
+	Total Execution Time        = 168 ms (min: 0, sec: 0, ms: 168)
+
+План выполнения:
+
+Operator    : Sort
+Attributes  : PlayerNo, LeagueNo
+Order       : LeagueNo asc
+Cardinality : 2.0 Records
+Cost        : 9.0 Logical Reads
+
+Operator    : Project
+Attributes  : PlayerNo,LeagueNo
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : Filter
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Condition   : Town = 'Stratford'
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : TableScan
+Table       : Players
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+__ STATISTICS _________________
+
+   Table Players
+         NPag = 3, NReg = 14
+      Index pk_Players
+         Attributes = [Players.PlayerNo asc]
+         NLeaf = 1, NKeys = 14, Clustered = false
+      Index PLAYER_Idx
+         Attributes = [Players.Name asc, Players.Initials asc]
+         NLeaf = 1, NKeys = 14, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 24 ms (min: 0, sec: 0, ms: 24)
+   Result cardinality = 2.0 Records
+   Cost               = 9.0 Logical Reads
+   Order              = [Players.LeagueNo asc]
+
+
+   Sort(
+        Project(
+                Filter(
+                       TableScan(
+                                 Players
+                                )
+                       Town = 'Stratford'
+                      )
+                {PlayerNo,LeagueNo}
+               )
+        {LeagueNo asc}
+       )
+____________________
+
+
+	PlayerNo    LeagueNo  
+	____________________
+	7           null      
+	39          null      
+	83          1608      
+	2           2411      
+	57          6409      
+	100         6524      
+	6           8467      
+	____________________
+	No of records 7
+
+
+	Access Plan Generation Time = 38 ms (min: 0, sec: 0, ms: 38)
+	Access Plan Execution Time  = 55 ms (min: 0, sec: 0, ms: 55)
+	Total Execution Time        = 93 ms (min: 0, sec: 0, ms: 93)
+
+
+План выполнения:
+
+Operator    : Sort
+Attributes  : PlayerNo, LeagueNo
+Order       : LeagueNo asc
+Cardinality : 2.0 Records
+Cost        : 9.0 Logical Reads
+
+Operator    : Project
+Attributes  : PlayerNo,LeagueNo
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : Filter
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Condition   : Town = 'Stratford'
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : TableScan
+Table       : Players
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+__ STATISTICS _________________
+
+   Table Players
+         NPag = 3, NReg = 14
+      Index pk_Players
+         Attributes = [Players.PlayerNo asc]
+         NLeaf = 1, NKeys = 14, Clustered = false
+      Index PLAYER_Idx
+         Attributes = [Players.Name asc, Players.Initials asc]
+         NLeaf = 1, NKeys = 14, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 18 ms (min: 0, sec: 0, ms: 18)
+   Result cardinality = 2.0 Records
+   Cost               = 9.0 Logical Reads
+   Order              = [Players.LeagueNo asc]
+
+
+   Sort(
+        Project(
+                Filter(
+                       TableScan(
+                                 Players
+                                )
+                       Town = 'Stratford'
+                      )
+                {PlayerNo,LeagueNo}
+               )
+        {LeagueNo asc}
+       )
+____________________
+
+
+	PlayerNo    LeagueNo  
+	____________________
+	7           null      
+	39          null      
+	83          1608      
+	2           2411      
+	57          6409      
+	100         6524      
+	6           8467      
+	____________________
+	No of records 7
+
+
+	Access Plan Generation Time = 46 ms (min: 0, sec: 0, ms: 46)
+	Access Plan Execution Time  = 354 ms (min: 0, sec: 0, ms: 354)
+	Total Execution Time        = 400 ms (min: 0, sec: 0, ms: 400)
+
