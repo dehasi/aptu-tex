@@ -1,0 +1,1184 @@
+План выполнения:
+
+Operator    : Project
+Attributes  : PlayerNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : Filter
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Condition   : NOT EXISTS 
+                      ( 
+                       SELECT   *
+                       FROM     Matches M1
+                       WHERE    PlayerNo = 57
+                         AND    NOT EXISTS 
+                               ( 
+                                SELECT   *
+                                FROM     Matches M2
+                                WHERE    M1.TeamNo = M2.TeamNo
+                                  AND    P.PlayerNo = M2.PlayerNo
+                               )
+                      )
+                AND    NOT PlayerNo IN 
+                      ( 
+                       SELECT   PlayerNo
+                       FROM     Matches
+                       WHERE    TeamNo IN 
+                               ( 
+                                SELECT   TeamNo
+                                FROM     Teams
+                                WHERE    NOT TeamNo IN 
+                                        ( 
+                                         SELECT   TeamNo
+                                         FROM     Matches
+                                        )
+                               )
+                      )
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : TableScan
+Table       : Players P
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Project
+Attributes  : PlayerNo
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : TeamNo IN 
+                      ( 
+                       SELECT   TeamNo
+                       FROM     Teams
+                       WHERE    NOT TeamNo IN 
+                               ( 
+                                SELECT   TeamNo
+                                FROM     Matches
+                               )
+                      )
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Project
+Attributes  : TeamNo
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : Filter
+Attributes  : TeamNo, PlayerNo, Division
+Condition   : NOT TeamNo IN 
+                      ( 
+                       SELECT   TeamNo
+                       FROM     Matches
+                      )
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Teams
+Attributes  : TeamNo, PlayerNo, Division
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : IndexOnlyFilter
+Table       : Matches
+Index       : fks_0_Matches
+Attributes  : TeamNo
+Condition   : none
+Order       : TeamNo asc
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : PlayerNo = 57
+                AND    NOT EXISTS 
+                      ( 
+                       SELECT   *
+                       FROM     Matches M2
+                       WHERE    M1.TeamNo = M2.TeamNo
+                         AND    P.PlayerNo = M2.PlayerNo
+                      )
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches M1
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : M1.TeamNo = M2.TeamNo
+                AND    P.PlayerNo = M2.PlayerNo
+Order       : none
+Cardinality : 1.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches M2
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 19 ms (min: 0, sec: 0, ms: 19)
+   Result cardinality = 1.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Filter(
+          TableScan(
+                    Matches M2
+                   )
+          M1.TeamNo = M2.TeamNo
+            AND    P.PlayerNo = M2.PlayerNo
+         )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 20 ms (min: 0, sec: 0, ms: 20)
+   Result cardinality = 2.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Filter(
+          TableScan(
+                    Matches M1
+                   )
+          PlayerNo = 57
+            AND    NOT EXISTS 
+                  ( 
+                   SELECT   *
+                   FROM     Matches M2
+                   WHERE    M1.TeamNo = M2.TeamNo
+                     AND    P.PlayerNo = M2.PlayerNo
+                  )
+         )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 9 ms (min: 0, sec: 0, ms: 9)
+   Result cardinality = 13.0 Records
+   Cost               = 1.0 Logical Reads
+   Order              = [Matches.TeamNo asc]
+
+
+   IndexOnlyFilter(
+                   Matches
+                   fks_0_Matches
+                  )
+____________________
+
+__ STATISTICS _________________
+
+   Table Teams
+         NPag = 1, NReg = 2
+      Index pk_Teams
+         Attributes = [Teams.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_0_Teams
+         Attributes = [Teams.PlayerNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 8 ms (min: 0, sec: 0, ms: 8)
+   Result cardinality = 2.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Teams
+                           )
+                  NOT TeamNo IN 
+                          ( 
+                           SELECT   TeamNo
+                           FROM     Matches
+                          )
+                 )
+           {TeamNo}
+          )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 11 ms (min: 0, sec: 0, ms: 11)
+   Result cardinality = 13.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Matches
+                           )
+                  TeamNo IN 
+                          ( 
+                           SELECT   TeamNo
+                           FROM     Teams
+                           WHERE    NOT TeamNo IN 
+                                   ( 
+                                    SELECT   TeamNo
+                                    FROM     Matches
+                                   )
+                          )
+                 )
+           {PlayerNo}
+          )
+____________________
+
+__ STATISTICS _________________
+
+   Table Players
+         NPag = 3, NReg = 14
+      Index pk_Players
+         Attributes = [Players.PlayerNo asc]
+         NLeaf = 1, NKeys = 14, Clustered = false
+      Index PLAYER_Idx
+         Attributes = [Players.Name asc, Players.Initials asc]
+         NLeaf = 1, NKeys = 14, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 15 ms (min: 0, sec: 0, ms: 15)
+   Result cardinality = 14.0 Records
+   Cost               = 3.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Players P
+                           )
+                  NOT EXISTS 
+                          ( 
+                           SELECT   *
+                           FROM     Matches M1
+                           WHERE    PlayerNo = 57
+                             AND    NOT EXISTS 
+                                   ( 
+                                    SELECT   *
+                                    FROM     Matches M2
+                                    WHERE    M1.TeamNo = M2.TeamNo
+                                      AND    P.PlayerNo = M2.PlayerNo
+                                   )
+                          )
+                    AND    NOT PlayerNo IN 
+                          ( 
+                           SELECT   PlayerNo
+                           FROM     Matches
+                           WHERE    TeamNo IN 
+                                   ( 
+                                    SELECT   TeamNo
+                                    FROM     Teams
+                                    WHERE    NOT TeamNo IN 
+                                            ( 
+                                             SELECT   TeamNo
+                                             FROM     Matches
+                                            )
+                                   )
+                          )
+                 )
+           {PlayerNo}
+          )
+____________________
+
+
+	PlayerNo    
+	__________
+	6           
+	44          
+	83          
+	2           
+	57          
+	8           
+	__________
+	No of records 6
+
+
+	Access Plan Generation Time = 484 ms (min: 0, sec: 0, ms: 484)
+	Access Plan Execution Time  = 92 ms (min: 0, sec: 0, ms: 92)
+	Total Execution Time        = 576 ms (min: 0, sec: 0, ms: 576)
+
+План выполнения:
+
+Operator    : Project
+Attributes  : PlayerNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : Filter
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Condition   : NOT EXISTS 
+                      ( 
+                       SELECT   *
+                       FROM     Matches M1
+                       WHERE    PlayerNo = 57
+                         AND    NOT EXISTS 
+                               ( 
+                                SELECT   *
+                                FROM     Matches M2
+                                WHERE    M1.TeamNo = M2.TeamNo
+                                  AND    P.PlayerNo = M2.PlayerNo
+                               )
+                      )
+                AND    NOT PlayerNo IN 
+                      ( 
+                       SELECT   PlayerNo
+                       FROM     Matches
+                       WHERE    TeamNo IN 
+                               ( 
+                                SELECT   TeamNo
+                                FROM     Teams
+                                WHERE    NOT TeamNo IN 
+                                        ( 
+                                         SELECT   TeamNo
+                                         FROM     Matches
+                                        )
+                               )
+                      )
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : TableScan
+Table       : Players P
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Project
+Attributes  : PlayerNo
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : TeamNo IN 
+                      ( 
+                       SELECT   TeamNo
+                       FROM     Teams
+                       WHERE    NOT TeamNo IN 
+                               ( 
+                                SELECT   TeamNo
+                                FROM     Matches
+                               )
+                      )
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Project
+Attributes  : TeamNo
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : Filter
+Attributes  : TeamNo, PlayerNo, Division
+Condition   : NOT TeamNo IN 
+                      ( 
+                       SELECT   TeamNo
+                       FROM     Matches
+                      )
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Teams
+Attributes  : TeamNo, PlayerNo, Division
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : IndexOnlyFilter
+Table       : Matches
+Index       : fks_0_Matches
+Attributes  : TeamNo
+Condition   : none
+Order       : TeamNo asc
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : PlayerNo = 57
+                AND    NOT EXISTS 
+                      ( 
+                       SELECT   *
+                       FROM     Matches M2
+                       WHERE    M1.TeamNo = M2.TeamNo
+                         AND    P.PlayerNo = M2.PlayerNo
+                      )
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches M1
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : M1.TeamNo = M2.TeamNo
+                AND    P.PlayerNo = M2.PlayerNo
+Order       : none
+Cardinality : 1.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches M2
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 18 ms (min: 0, sec: 0, ms: 18)
+   Result cardinality = 1.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Filter(
+          TableScan(
+                    Matches M2
+                   )
+          M1.TeamNo = M2.TeamNo
+            AND    P.PlayerNo = M2.PlayerNo
+         )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 21 ms (min: 0, sec: 0, ms: 21)
+   Result cardinality = 2.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Filter(
+          TableScan(
+                    Matches M1
+                   )
+          PlayerNo = 57
+            AND    NOT EXISTS 
+                  ( 
+                   SELECT   *
+                   FROM     Matches M2
+                   WHERE    M1.TeamNo = M2.TeamNo
+                     AND    P.PlayerNo = M2.PlayerNo
+                  )
+         )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 10 ms (min: 0, sec: 0, ms: 10)
+   Result cardinality = 13.0 Records
+   Cost               = 1.0 Logical Reads
+   Order              = [Matches.TeamNo asc]
+
+
+   IndexOnlyFilter(
+                   Matches
+                   fks_0_Matches
+                  )
+____________________
+
+__ STATISTICS _________________
+
+   Table Teams
+         NPag = 1, NReg = 2
+      Index pk_Teams
+         Attributes = [Teams.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_0_Teams
+         Attributes = [Teams.PlayerNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 12 ms (min: 0, sec: 0, ms: 12)
+   Result cardinality = 2.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Teams
+                           )
+                  NOT TeamNo IN 
+                          ( 
+                           SELECT   TeamNo
+                           FROM     Matches
+                          )
+                 )
+           {TeamNo}
+          )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 12 ms (min: 0, sec: 0, ms: 12)
+   Result cardinality = 13.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Matches
+                           )
+                  TeamNo IN 
+                          ( 
+                           SELECT   TeamNo
+                           FROM     Teams
+                           WHERE    NOT TeamNo IN 
+                                   ( 
+                                    SELECT   TeamNo
+                                    FROM     Matches
+                                   )
+                          )
+                 )
+           {PlayerNo}
+          )
+____________________
+
+__ STATISTICS _________________
+
+   Table Players
+         NPag = 3, NReg = 14
+      Index pk_Players
+         Attributes = [Players.PlayerNo asc]
+         NLeaf = 1, NKeys = 14, Clustered = false
+      Index PLAYER_Idx
+         Attributes = [Players.Name asc, Players.Initials asc]
+         NLeaf = 1, NKeys = 14, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 19 ms (min: 0, sec: 0, ms: 19)
+   Result cardinality = 14.0 Records
+   Cost               = 3.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Players P
+                           )
+                  NOT EXISTS 
+                          ( 
+                           SELECT   *
+                           FROM     Matches M1
+                           WHERE    PlayerNo = 57
+                             AND    NOT EXISTS 
+                                   ( 
+                                    SELECT   *
+                                    FROM     Matches M2
+                                    WHERE    M1.TeamNo = M2.TeamNo
+                                      AND    P.PlayerNo = M2.PlayerNo
+                                   )
+                          )
+                    AND    NOT PlayerNo IN 
+                          ( 
+                           SELECT   PlayerNo
+                           FROM     Matches
+                           WHERE    TeamNo IN 
+                                   ( 
+                                    SELECT   TeamNo
+                                    FROM     Teams
+                                    WHERE    NOT TeamNo IN 
+                                            ( 
+                                             SELECT   TeamNo
+                                             FROM     Matches
+                                            )
+                                   )
+                          )
+                 )
+           {PlayerNo}
+          )
+____________________
+
+
+	PlayerNo    
+	__________
+	6           
+	44          
+	83          
+	2           
+	57          
+	8           
+	__________
+	No of records 6
+
+
+	Access Plan Generation Time = 475 ms (min: 0, sec: 0, ms: 475)
+	Access Plan Execution Time  = 551 ms (min: 0, sec: 0, ms: 551)
+	Total Execution Time        = 1026 ms (min: 0, sec: 1, ms: 26)
+
+План выполнения:
+
+Operator    : Project
+Attributes  : PlayerNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : Filter
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Condition   : NOT EXISTS 
+                      ( 
+                       SELECT   *
+                       FROM     Matches M1
+                       WHERE    PlayerNo = 57
+                         AND    NOT EXISTS 
+                               ( 
+                                SELECT   *
+                                FROM     Matches M2
+                                WHERE    M1.TeamNo = M2.TeamNo
+                                  AND    P.PlayerNo = M2.PlayerNo
+                               )
+                      )
+                AND    NOT PlayerNo IN 
+                      ( 
+                       SELECT   PlayerNo
+                       FROM     Matches
+                       WHERE    TeamNo IN 
+                               ( 
+                                SELECT   TeamNo
+                                FROM     Teams
+                                WHERE    NOT TeamNo IN 
+                                        ( 
+                                         SELECT   TeamNo
+                                         FROM     Matches
+                                        )
+                               )
+                      )
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Operator    : TableScan
+Table       : Players P
+Attributes  : PlayerNo, Name, Initials, BirthYear, Sex, Joined, Street, HouseNo, PostCode, Town, PhoneNo, LeagueNo
+Order       : none
+Cardinality : 14.0 Records
+Cost        : 3.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Project
+Attributes  : PlayerNo
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : TeamNo IN 
+                      ( 
+                       SELECT   TeamNo
+                       FROM     Teams
+                       WHERE    NOT TeamNo IN 
+                               ( 
+                                SELECT   TeamNo
+                                FROM     Matches
+                               )
+                      )
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Project
+Attributes  : TeamNo
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : Filter
+Attributes  : TeamNo, PlayerNo, Division
+Condition   : NOT TeamNo IN 
+                      ( 
+                       SELECT   TeamNo
+                       FROM     Matches
+                      )
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Teams
+Attributes  : TeamNo, PlayerNo, Division
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : IndexOnlyFilter
+Table       : Matches
+Index       : fks_0_Matches
+Attributes  : TeamNo
+Condition   : none
+Order       : TeamNo asc
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : PlayerNo = 57
+                AND    NOT EXISTS 
+                      ( 
+                       SELECT   *
+                       FROM     Matches M2
+                       WHERE    M1.TeamNo = M2.TeamNo
+                         AND    P.PlayerNo = M2.PlayerNo
+                      )
+Order       : none
+Cardinality : 2.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches M1
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+Вложенный запрос, план выполнения:
+
+Operator    : Filter
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Condition   : M1.TeamNo = M2.TeamNo
+                AND    P.PlayerNo = M2.PlayerNo
+Order       : none
+Cardinality : 1.0 Records
+Cost        : 1.0 Logical Reads
+
+Operator    : TableScan
+Table       : Matches M2
+Attributes  : MatchNo, TeamNo, PlayerNo, Won, Lost
+Order       : none
+Cardinality : 13.0 Records
+Cost        : 1.0 Logical Reads
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 57 ms (min: 0, sec: 0, ms: 57)
+   Result cardinality = 1.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Filter(
+          TableScan(
+                    Matches M2
+                   )
+          M1.TeamNo = M2.TeamNo
+            AND    P.PlayerNo = M2.PlayerNo
+         )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 44 ms (min: 0, sec: 0, ms: 44)
+   Result cardinality = 2.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Filter(
+          TableScan(
+                    Matches M1
+                   )
+          PlayerNo = 57
+            AND    NOT EXISTS 
+                  ( 
+                   SELECT   *
+                   FROM     Matches M2
+                   WHERE    M1.TeamNo = M2.TeamNo
+                     AND    P.PlayerNo = M2.PlayerNo
+                  )
+         )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 11 ms (min: 0, sec: 0, ms: 11)
+   Result cardinality = 13.0 Records
+   Cost               = 1.0 Logical Reads
+   Order              = [Matches.TeamNo asc]
+
+
+   IndexOnlyFilter(
+                   Matches
+                   fks_0_Matches
+                  )
+____________________
+
+__ STATISTICS _________________
+
+   Table Teams
+         NPag = 1, NReg = 2
+      Index pk_Teams
+         Attributes = [Teams.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_0_Teams
+         Attributes = [Teams.PlayerNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 15 ms (min: 0, sec: 0, ms: 15)
+   Result cardinality = 2.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Teams
+                           )
+                  NOT TeamNo IN 
+                          ( 
+                           SELECT   TeamNo
+                           FROM     Matches
+                          )
+                 )
+           {TeamNo}
+          )
+____________________
+
+__ STATISTICS _________________
+
+   Table Matches
+         NPag = 1, NReg = 13
+      Index pk_Matches
+         Attributes = [Matches.MatchNo asc]
+         NLeaf = 1, NKeys = 13, Clustered = false
+      Index fks_0_Matches
+         Attributes = [Matches.TeamNo asc]
+         NLeaf = 1, NKeys = 2, Clustered = false
+      Index fks_1_Matches
+         Attributes = [Matches.PlayerNo asc]
+         NLeaf = 1, NKeys = 9, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 27 ms (min: 0, sec: 0, ms: 27)
+   Result cardinality = 13.0 Records
+   Cost               = 1.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Matches
+                           )
+                  TeamNo IN 
+                          ( 
+                           SELECT   TeamNo
+                           FROM     Teams
+                           WHERE    NOT TeamNo IN 
+                                   ( 
+                                    SELECT   TeamNo
+                                    FROM     Matches
+                                   )
+                          )
+                 )
+           {PlayerNo}
+          )
+____________________
+
+__ STATISTICS _________________
+
+   Table Players
+         NPag = 3, NReg = 14
+      Index pk_Players
+         Attributes = [Players.PlayerNo asc]
+         NLeaf = 1, NKeys = 14, Clustered = false
+      Index PLAYER_Idx
+         Attributes = [Players.Name asc, Players.Initials asc]
+         NLeaf = 1, NKeys = 14, Clustered = false 
+
+
+__ GREEDY SEARCH __________ 
+
+   Time               = 20 ms (min: 0, sec: 0, ms: 20)
+   Result cardinality = 14.0 Records
+   Cost               = 3.0 Logical Reads
+
+   Project(
+           Filter(
+                  TableScan(
+                            Players P
+                           )
+                  NOT EXISTS 
+                          ( 
+                           SELECT   *
+                           FROM     Matches M1
+                           WHERE    PlayerNo = 57
+                             AND    NOT EXISTS 
+                                   ( 
+                                    SELECT   *
+                                    FROM     Matches M2
+                                    WHERE    M1.TeamNo = M2.TeamNo
+                                      AND    P.PlayerNo = M2.PlayerNo
+                                   )
+                          )
+                    AND    NOT PlayerNo IN 
+                          ( 
+                           SELECT   PlayerNo
+                           FROM     Matches
+                           WHERE    TeamNo IN 
+                                   ( 
+                                    SELECT   TeamNo
+                                    FROM     Teams
+                                    WHERE    NOT TeamNo IN 
+                                            ( 
+                                             SELECT   TeamNo
+                                             FROM     Matches
+                                            )
+                                   )
+                          )
+                 )
+           {PlayerNo}
+          )
+____________________
+
+
+	PlayerNo    
+	__________
+

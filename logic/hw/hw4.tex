@@ -1,0 +1,187 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=1.5cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 4}
+
+\paragraph{Задание 15.} Запишите формулу языка элементарной арифметики, выражающую в стандартной интерпритации этого языка следующее:
+
+\begin{itemize}
+\item (a) $z$ есть наибольший общий делитель $x$ и $y$;
+
+\item (b) $z$ есть остаток от деления $x$ на $y$, и $y$ отлично от нуля;
+
+\item (c) $x$ есть степень некоторого простого числа.
+\end{itemize}
+
+\begin{Solution}
+Обозначим $a \vdots b \leftrightharpoons \exists k \left[kb = a \land b \not= 0\right]$. Тогда утверждение (a) выглядит так:
+\[
+	\forall z' \left[x \vdots z' \land y \vdots z' \supset z' \le z\right]
+\]
+
+Утверждение (b) выглядит так:
+\[
+	\exists k \left[(x = ky + z) \land (y \not= 0)\right]
+\]
+
+Обозначим:
+\[
+	Prime\left(x\right) \leftrightharpoons \forall k\left[\left(k = 0\right)\lor\left(x\not= S0\right)\land\left(x\not= 0\right)\land\left(x\vdots k \supset \left(k=S0\right)\lor\left(k=x\right)\right)\right]
+\]
+
+Тогда последнее утверждение можно записать так:
+\[
+	\left(x=0\right)\lor \forall k'\forall k'' \left[Prime\left(k'\right)\land Prime\left(k''\right)\land\left(x\vdots k'\right)\land\left(x\vdots k''\right)\supset\left(k'=k''\right)\right]
+\]
+\end{Solution}
+
+\paragraph{Задание 16.} Будем рассматривать язык первого порядка, сигнатура, которого содержит только 3 одноместных предикатных символа Т, Пр, Пл и 2 два двуместных предикатных символа $\in, =$. Зададим интерпритацию этого языка: носителем является множество всех точек, прямых и плоскостей 3-мерного евклидова пространства; предикатным символам сопоставлены одноименные предикаты, определенные таким образом:
+\begin{itemize}
+\item T($x$) : <<$x$ - точка>>,
+
+\item Пр($x$) : <<$x$ - прямая>>,
+
+\item Пл($x$) : <<$x$ - плоскость>>,
+
+\item $x \in y$ : <<$x$ принадлежит (лежит на) $y$>>,
+
+\item $x = y$ : <<$x$ совпадает с $y$>>.
+\end{itemize}
+
+Запишите на этом языке формулу, выражающую в данной интерпритации следующее:
+\begin{itemize}
+\item ($a$) через любые 3 точки, не лежащие на одной прямой, можно провести единтсвенную плоскость;
+
+\item ($b$) если 2 точки прямой лежат в плоскости, то всякая точка этой прямой лежит в этой плоскости;
+
+\item ($c$) 2 прямые, лежащие в одной и той же плоскости, либо имеют одну общую точку, либо не имеют ни одной;
+\end{itemize}
+
+\begin{Solution}
+Введем следующее обозначение:
+\[
+	Online\left(x,y,z\right) \leftrightharpoons \exists l\left[\text{Т}\left(x\right)\land \text{Т}\left(y\right)\land\text{Т}\left(z\right)\land\text{Пр}\left(l\right)\land\left(x \in l\right)\land\left(y \in l\right)\land\left(z \in l\right)\right]
+\]
+
+Тогда утверждение $(a)$ будет выглядеть следующим образом:
+\[
+	\forall x \forall y \forall z \exists ! p \left[\text{Пл}\left(p\right) \land \neg Online\left(x,y,z\right)\supset\left(x \in p\right)\land\left(y \in p\right)\land\left(z \in p\right)\right]
+\]
+
+Введем обозначения:
+\[
+	\begin{split}
+		& Online\left(x,y,l\right) \leftrightharpoons \left[\text{Т}\left(x\right)\land\text{Т}\left(y\right)\land\text{Пр}\left(l\right)\land\left(x \in l\right)\land\left(y \in l\right)\right] \\
+		& Onplate\left(x,y,p\right) \leftrightharpoons \left[\text{Т}\left(x\right)\land\text{Т}\left(y\right)\land\text{Пл}\left(p\right)\land\left(x \in p\right)\land\left(x \in p\right)\right]
+	\end{split}
+\]
+
+Тогда утверждение $(b)$ выглядит следующим образом:
+\[
+	\forall l \forall p \left[\exists x \exists y \left[Online\left(x,y,l\right)\land Onplate\left(x,y,p\right)\right]\supset\left(l \in p\right)\right]
+\]
+
+Введем обозначение
+\[
+	\begin{split}
+		& Cross\left(x,y\right) \leftrightharpoons \text{Пр}\left(x\right)\land\text{Пр}\left(y\right)\land\exists !p \left[\text{Т}\left(p\right)\land\left(p \in x\right)\land\left(p \in y\right)\right] \\
+		& Nocross\left(x,y\right) \leftrightharpoons \text{Пр}\left(x\right)\land\text{Пр}\left(y\right)\land\neg\exists p\left[\text{Т}\left(p\right)\land\left(p \in x\right)\land\left(p \in y\right)\right]
+	\end{split}
+\]
+Утверждение $(c)$ записывается следующим образом:
+\[
+	\forall l_1 \forall l_2 \left[\left(l_1 \not= l_2\right)\land\exists p \left[\text{Пл}\left(p\right)\land\left(l_1 \in p\right)\land\left(l_2 \in p\right)\right]\supset Cross\left(l_1,l_2\right)\text{ xor }Nocross\left(l_1,l_2\right)\right]
+\]
+\end{Solution}
+
+\paragraph{Задание 17.} Докажите, что формула истинна во всякой интерпритации при любой оценке, или укажите интерпритацию и оценку, при которой эта формула ложна.
+\begin{itemize}
+\item $(a)$ $\exists x\forall y P\left(x,y\right) \supset \forall y \exists x P\left(x,y\right)$
+
+\item $(b)$ $\forall y \exists x P\left(x,y\right) \supset \exists x\forall y P\left(x,y\right)$
+\end{itemize}
+
+\begin{Solution}
+Докажем для пункта $(a)$. Из семантики записи из истинности утверждения посылки в некоторой интерпритации $M$ и оценке $\nu$ можно заключить, что $\left|\forall y P\left(x,y\right)\right|_{M, \nu_{\alpha}^x} = \left|\forall y P\left(\alpha,y\right)\right|_{M,\nu} = \left|P\left(\alpha,y\right)\right)_{M,\nu_{\beta}^y} = \left|P\left(\alpha,\beta\right)\right| = 1$, где $\beta$ - любой элемент носителя, и $\alpha$ - какой-то фиксированный элемент носителя, но в этой же интерпритации оценке для следствия получаем:
+\[
+	\left|\forall y \exists x P\left(x,y\right)\right| = \left|\exists x P\left(x, \beta'\right)\right|
+\]
+где $\beta'$ - любой элемент носителя, но истинностное значение последнего равно 1, так как если вместо $x$ подставить $\alpha$, при любом значении $\beta'$ из носителя.
+
+Если же истинностное значение посылки ложно, то все утверждение истинно, и на этом рассмотрение данного случая можно закончить.
+
+Покажем для пункта $(b)$, что существует интерпритация и оценка, в которой формула ложна. Рассмотрим язык элементарной арифметики с двуместным предикатом $P\left(x,y\right)$. $P\left(x,y\right)$ - истинно, если $x \not= 0$ и $x \vdots y$ ($y$ - делтель $x$ или $y = 0$).
+
+Посылка очевидно истинна, так как любого $\alpha \not= 0$ существует целое неотрицательное число, делителем которого он является (например, $P\left(k\alpha,\alpha\right)$ - истинно), а при $\alpha = 0$ достаточно положить $\beta \in \mathbb{N}$, чтобы $\left|P\left(\beta,\alpha\right)\right| = 1$ т. е. получаем истинну.
+
+Следствие же ложно, так как для любого $\alpha \in \mathbb{N}$, имеем $\left|P\left(\alpha,\alpha + S0\right)\right| = 0$, т. е. $\left|\forall y P\left(\alpha, y\right)\right| = 0$, а для $\alpha = 0$ имеем $\left|\forall y P\left(0,y\right)\right| = 0$, т. к. независимо от $y$ $P\left(0,y\right) = \mathbb{F}$, то есть опять имеем противоречие - посылка истинна, а следствие ложно.
+\end{Solution}
+
+\paragraph{Задание 18.} Укажите и обоснуйте (разумно слабые) условия на формулу $A$, переменную $x$ и терм $t$, при которых формула
+\[
+	\forall x A \supset \left[A\right]_{t}^{x}
+\]
+истинна во всякой интерпритации при любой оценке. Если это возможно, укажите конкретные формулу $A$, переменную $x$, терм $t$, интерпритацию и оценку, при которых формула ложна.
+
+\begin{Solution}
+Рассмотрим в языке элементарной арифметики формулу:
+\[
+	\forall x \exists y \left[y \ge x \land y\not=0\right]
+\]
+формула выражет утверждение, что для любого неотрицательного целого числа существует натуральное большее или равное самому числу, очевидно утверждение верно, достаточно прибавит единицу к исходному числу.
+
+Заменим теперь $x$ на терм $y+y$, тогда получим формулу:
+\[
+	\exists y \left[y \ge y+y \land y\not=0\right]
+\]
+Данная формула очевидно ложна, так как $y \ge y+y$ только в случае $y=0$, нопри это ложно $y\not=0$.
+
+Отсюда можно заключить, что для безопасной замены $x$ на $t$ необходимо, чтобы $t$ не содержал связанных кванторами переменных входящих в $A$, чтобы избежать коллизий перемнных, на которые наложены кванторные условия.
+\end{Solution}
+
+\end{document}
