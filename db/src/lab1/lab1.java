@@ -2,11 +2,14 @@ import java.sql.*;
 import java.util.Random;
 import java.lang.Integer;
 
+/* zvorygin@gmail.com */
+
 class lab1 {
 	static Random rnd = new Random(System.nanoTime());
 
-	static String interval = "SELECT name FROM INDEX_SPEED_TEST WHERE rowid>450000 AND rowid<550000";
+	static String interval = "SELECT count(*) FROM INDEX_SPEED_TEST WHERE rowid>450000 AND rowid<550000";
 	static String parity = "SELECT name FROM INDEX_SPEED_TEST WHERE rowid%2>0";
+        static String one = "SELECT name FROM INDEX_SPEED_TEST WHERE rowid = 500000";
 	static String all = "SELECT * FROM INDEX_SPEED_TEST";
 
 	static Connection dbh;
@@ -20,7 +23,7 @@ class lab1 {
 		rs = st.executeQuery(all);
 		endTime = System.nanoTime();
 		rs.close();
-		System.out.println("Query all records:");
+		System.out.println("Query: " + all);
 		System.out.print("time = ");
 		System.out.println(endTime-beginTime);
 
@@ -28,7 +31,7 @@ class lab1 {
 		rs = st.executeQuery(interval);
 		endTime = System.nanoTime();
 		rs.close();
-		System.out.println("Query records with rowid in (450000;550000)");
+		System.out.println("Query: " + interval);
 		System.out.print("time = ");
 		System.out.println(endTime-beginTime);
 
@@ -36,7 +39,15 @@ class lab1 {
 		rs = st.executeQuery(parity);
 		endTime = System.nanoTime();
 		rs.close();
-		System.out.println("Query records with even rowid");
+		System.out.println("Query: " + parity);
+		System.out.print("time = ");
+		System.out.println(endTime-beginTime);
+
+		beginTime = System.nanoTime();
+		rs = st.executeQuery(one);
+		endTime = System.nanoTime();
+		rs.close();
+		System.out.println("Query: " + one);
 		System.out.print("time = ");
 		System.out.println(endTime-beginTime);
 	}
