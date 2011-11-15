@@ -28,7 +28,7 @@ create table "towerserveuser" (
 		begintime timestamp not null,
 		endtime timestamp null,
 		constraint userveid
-			unique (userid, towerid, begintime),
+			primary key (userid, towerid, begintime),
 			check (begintime < endtime)
 		);
 
@@ -38,7 +38,7 @@ create table "usercalluser" (
 			begintime timestamp not null,
 			endtime timestamp null,
 			constraint ucallid
-				unique (firstid, secondid, begintime),
+				primary key (firstid, secondid, begintime),
 				check (begintime < endtime),
 				check (firstid <> secondid)
 		);
