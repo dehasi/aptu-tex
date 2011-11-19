@@ -9,11 +9,6 @@ FROM Players
 WHERE Town = 'Stratford'
 ORDER BY LeagueNo;
 
-10.12
-SELECT PlayerNo, BirthYear
-FROM Players
-WHERE BirthYear IN (1962, 1963, 1970);
-
 10.18
 SELECT PlayerNo, Name
 FROM Players
@@ -21,22 +16,6 @@ WHERE PlayerNo IN
 	(SELECT PlayerNo
 	 FROM Matches
 	 WHERE TeamNo = 1);
-
-10.23
-SELECT PlayerNo, Name, BirthYear
-FROM Players
-WHERE BirthYear > ANY
-	(SELECT BirthYear
-	 FROM Players);
-
-15.3
-SELECT DISTINCT PlayerNo
-FROM Penalties PN
-WHERE EXISTS
-	(SELECT *
-	 FROM Penalties
-	 WHERE PN.PlayerNo = PlayerNo
-		AND PaymentNo <> PN.PaymentNo);
 
 15.9
 SELECT PlayerNo
