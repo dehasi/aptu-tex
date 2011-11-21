@@ -18,7 +18,7 @@ class abstractmatrix(object):
 	def setitem(self, r, c, item):
 		self._matrix[r][c]=item
 
-	def __mulmm(self, matrix):
+	def mulm(self, matrix):
 		if not (self.cols() == matrix.rows()):
 			raise NotImplementedError('undefined behavior for this matrix size')
 		res = abstractmatrix(self.rows(), matrix.cols())
@@ -30,7 +30,7 @@ class abstractmatrix(object):
 				res.setitem(r, c, data)
 		return res
 
-	def __mulmk(self, k):
+	def mulk(self, k):
 		res = abstractmatrix(self.rows(), self.cols())
 		for r in xrange(res.rows()):
 			for c in xrange(res.cols()):
@@ -39,12 +39,12 @@ class abstractmatrix(object):
 
 	def __mul__(self, right):
 		if isinstance(right, abstractmatrix):
-			return self.__mulmm(right)
+			return self.mulm(right)
 		else:
-			return self.__mulmk(right)
+			return self.mulk(right)
 
-	def __mulr__(self, left):
-		return self.__mulmk(left)
+	def __rmul__(self, left):
+		return self.mulk(left)
 
 	def __add__(self, matrix):
 		if not (self.rows() == matrix.rows()) or not (self.cols() == matrix.cols()):
@@ -72,13 +72,38 @@ class abstractmatrix(object):
 			res = res + "\n"
 		return res
 
-class squarematrix(abstractmatrix):
-	def __init__(self, size):
-		self._size = size
-		super(squarematrix, self).__init__(size, size)
+	def exclude(self, row, col):
+		res = abstractmatrix(self.rows()-1, self.cols()-1)
+		for r in xrange(res.rows()):
+			for c in xrange(res.cols()):
+				cpos = c;
+				rpos = r;
+				if cpos >= col:
+					cpos += 1
+				if rpos >= row:
+					rpos += 1
+				res.setitem(r, c, self.getitem(rpos, cpos))
+		return res
 
-	def size(self):
-		return self._size;
+	def det(self):
+		if not (self.rows() == self.cols()):
+			raise NotImplementedError('undefined behavior for this matrix size')
+		if self.rows() == 1:
+			return self.getitem(0, 0);
+		res = 0;
+		for i in xrange(self.rows()):
+			res += ((-1)**i)*self.getitem(i, 0)*self.exclude(i, 0).det()
+		return res;
+
+	def __invert__(self):
+		if not (self.rows() == self.cols()):
+			raise NotImplementedError('undefined behavior for this matrix size')
+		sdet = self.det()
+		res = abstractmatrix(self.rows(), self.cols())
+		for r in xrange(self.rows()):
+			for c in xrange(self.cols()):
+				res.setitem(r, c, ((-1)**(r+c))*self.exclude(r, c).det())
+		return res.mulk(1.0/sdet)
 
 class vector(abstractmatrix):
 	def __init__(self, size):
@@ -91,8 +116,8 @@ class vector(abstractmatrix):
 	def setitem(self, index, data):
 		super(vector, self).setitem(index, 0, data)
 
-identity = squarematrix(3)
-for i in xrange(identity.size()):
+identity = abstractmatrix(3, 3)
+for i in xrange(identity.rows()):
 	identity.setitem(i, i, 1);
 
 print identity
@@ -112,3 +137,13 @@ for i in xrange(3):
 
 result = identity4*vector1
 print result
+
+vector2 = 2*vector1
+print vector2
+
+identity5 = identity4.exclude(1, 1)
+print identity5
+
+print identity.det()
+
+print (~identity2)
