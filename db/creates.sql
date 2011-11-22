@@ -1,4 +1,4 @@
-﻿create table "region" (
+create table "region" (
 		id serial primary key,
 		name varchar(80) not null unique
 		);

@@ -1,0 +1,122 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=1.5cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 5}
+
+\paragraph{19.} Если это возможно, укажите конкретные формулы $A$ и $B$, а также интерпритацию и оценку, при которых следующая формула ложна:
+
+\begin{itemize}
+\item (a) $A \lor \exists x B \equiv \exists x \left(A \lor B\right)$
+
+\item (b) $A \supset \forall x B \equiv \forall x \left(A \supset B\right)$
+\end{itemize}
+
+\begin{Solution}
+Рассмотрим пункт (a). Пусть $A = x > SS0$ и $B = x < SS0$, $x$ - переменная, тогда:
+\[
+	\left(x>SS0\right)\lor\exists x \left(x<SS0\right)\equiv\exists \left(\left(x>SS0\right)\lor\left(x<SS0\right)\right)
+\]
+Но левая часть зависит от оценки, допустим в некоторой оценке $\mu$ $\left|x\right|_{\mu} = 4$, тогда очевидно левая часть истинна, но првая часть ложна, так как $x$ в ней связана квантором существования, а значит все выражение в данной интерпритации ложно.
+
+Теперь рассмотрим пункт (b). Пусть $A = B = x > S0$, тогда получаем:
+\[
+	\left(x > S0\right) \supset \forall \left(x > S0\right) \equiv \forall \left(\left(x > S0\right) \supset \left(x > S0\right)\right)
+\]
+Правая часть очевидно тождественно верна, но в левой части переменная $x$ не связана квантором всеобщности и значит выражение зависит от оценки, и при любой оценке сопоставляющей перемнной $x$ значение $> 1$ получаем, что левая часть ложна, а значит и все выражение ложно.
+\end{Solution}
+
+\paragraph{20.} Докажите, что конгруэнтные формулы равносильны.
+
+\begin{Solution}
+Идейно, утверждение следует из того, что конгруентные формулы отличаются связанными переменными. Но так как на связанные переменные налагют ограничения кванторы, то формулы должны быть равносильны.
+
+Бескванторные формулы конгруентны если они совпадают, далее пусть в формуле есть всего один квантор.
+
+Пусть $A$ и $B$ - конгруентны, будем рассматривать кванторы существования и всеобщности, а также подформулы, на которых эти кванторы действуют. Пусть $A' = \forall x A''$ - подформула формулы $A$, где $A''$ - безкванторная формула, но это означает, что в формуле $B$ на том же месте стоит подформула $B' = \forall y B''$, где $B''$ - бескванторная подформула, в которой каждому вхождению переменной $x$ в $A''$ соответствует вхождение переменной $y$ в $B''$. Пусть заданы интерпритация $M$ и оценка $v$, тогда если $\left|A'\right|_{M, v} = 1$, то для любого $\alpha \in D$ $\left|A''\right|_{M, v^{x}_{\alpha}} = 1$, а значит, что и для $\left|B''\right|_{M, v^{y}_{\alpha}} = 1$, если же $\exists \alpha \in D : \left|A''\right|_{M, v^{x}_{\alpha}} = 0$, то и $\left|B''\right|_{M, v^{y}_{\alpha}} = 0$.
+
+Теперь пусть $A' = \exists x A''$ и $B' = \exists x B''$. Тогда, если $\left|A'\right|_{M,v} = 1$ значит, что $\exists \alpha \in D : \left|A''\right|_{M, v^{x}_{\alpha}} = 1$, но тогда $\left|B''\right|_{M, v^{y}_{\alpha}} = 1$, следовательно $\left|B'\right|_{M, v} = 1$, если же $\not\exists \alpha \in D : \left|A''\right|_{M, v^{x}_{\alpha}} = 1$, но это также значит, что и для переменной $y$ не существует такого $\alpha in D : \left|B''\right|_{M,v^{y}_{\alpha}} = 1$, а значит $\left|B'\right|_{M,v} = 0$.
+
+Теперь пусть $A$ и $B$ конгруентны, и $A = \forall x A'$, $B = \forall y B'$. Если $\left|A\right|_{M, v} = 1$, значит $\forall \alpha \in D : \left|A'\right|_{M,v_{\alpha}^x} = 1$, а значит в этой интепритации и оценке, если $A'$ и $B'$ равносильны, то и $\left|B'\right|_{M,v_{\alpha}^y}$, если же $\left|A\right|_{M,v} = 0$, то следовательно существует $\alpha \in D : \left|A'\right|_{M,v_{\alpha}^x} = 0$, но тогда из равносильности $A'$ и $B'$ получаем $\left|B'\right|_{M,v_{\alpha}^y} = 0$, следовательно $\left|B\right|_{M, v} = 0$
+\end{Solution}
+
+\paragraph{21.} Докажите, что бескванторная предикатная формула общезначима тогда и только тогда, когда она является частным случаем пропозициональной тавтологии.
+
+\begin{Solution}
+Сопоставим множеству предикатных символов множество пропозициональных переменных и истинностных констант.
+
+\begin{itemize}
+\item Если $F\left(x_1, x_2, ..., x_n\right)$ - $n$-метный предикатный символ и $\forall \alpha_1, \alpha_2, ..., \alpha_n \in D : \left|F\left(\alpha_1, \alpha_2, ..., \alpha_n\right)\right|_M = 1$, то сопоставим ему истинностную константну $\mathbb{T}$
+
+\item Если же при том же смысле $F$ получаем $\forall \alpha_1, \alpha_2, ..., \alpha_n \in D : \left|F\left(\alpha_1, \alpha_2, ...,\alpha_n\right)\right|_M = 0$, то соспоставим ему истинностную константну $\mathbb{F}$
+
+\item Во всех остальных случаях сопоставим каждому предикатному символу $F$ пропозициональную переменную, причем всем функциональным символам $F_1, F_2, ... F_k$ таким что $F_1 \equiv F_2 \equiv ... \equiv F_k$ сопоставим одну и ту же пропозициональную переменную $x$. Функциональным символам, для которых это не выполняется сопоставляем различные пропозициональные перменные.
+\end{itemize}
+
+Тогда формула полученная из исходной таким отображением является пропозициональной формулой и является тождественно истинной, если является пропозициональной тавтологией, но по построению оценка новой формулы равна оценке исходной.
+\end{Solution}
+
+\paragraph{22.} Верно ли, что для любой формулы $A$ имеет место:
+\begin{itemize}
+\item (a) $A$ общезначима тогда и только тогда, когда $\neg \forall\negthickspace\forall\negthickspace\forall A$ невыполнима;
+
+\item (b) $A$ общезначима тогда и только тогда, когда $\neg A$ невыполнима;
+
+\item (с) $A$ невыполнима тогда и только тогда, когда $\forall\negthickspace\forall\negthickspace\forall A$?
+\end{itemize} 
+
+\begin{Solution}
+Рассмотрим утверждение (a). Если формула $A$ общезначима, значит при любой интерпритации $M$ и любой оценке $v$ $\left|A\right|_{M,v} = 1$, пусть $x$ - не связанная квантором перемнная в $A$, тогда из предыдущего утверждения получаем, что $\left|\forall x A\right|_{M, v} = 1$, повторяем подобное рассужедение для каждого параметра $A$ получаем универсальное замыкание, интерпритация которого равна 1, а интерпритация отрицания равна 0, а значит отрицание универсального замыкания невыполнимо.
+
+Теперь пусть отрицание универсального замыкания невыполнимо, тогда универсальное замыкание выполнимо. Из того, что $\forall x_1 \forall x_2 ... \forall x_n A$ - выполнима, следует, что для любой интерпритации и оценки выполнима формула $\forall x_2 ... \forall x_n A$, продолжая также по одному устранять кванторы всеобщности, навешанные на параметры $A$, получаем что исходная орфмула также выполнима.
+
+Рассмотрим утверждение (b). Оценка формулы $\left|\neg A\right|_{M, v} = 0$, если и только если $\left|A\right|_{M, v} = 1$, но для любой интерпритации и оценки $\left|A\right|_{M, v} = 1$, а значит и $\left|\neg A\right|_{M,v} = 0$, верно и обратное.
+
+Рассмотрим утверждение (c). Данное утверждение уже не верно. Из невыполнимости $A$ следует, что при любых оценке и интерпритации $\left|A\right| = 0$, а значит навешивая квантор всеобщности на параметры не меняем невыполнимости формулы. Но в обратную сторону это не верно, так как интуитивно снятие квантора всеобщности с перемнной - ослабление условия. Пусть некоторой переменной $x$ связанной квантором в $\forall\negthickspace\forall\negthickspace\forall A = \forall\negthickspace\forall\negthickspace\forall \forall x A$ и являющаяся параметром в $A$ в некоторой оценке $v$ сопоставлется $\alpha$ такое что $\left|\forall\negthickspace\forall\negthickspace\forall A\right|_{M, v^{x}_{\alpha}} = 0$, но при этом для того, чтобы формула $A$ была выполнима достаточно существование $\beta$ такое, что $\left|\forall\negthickspace\forall\negthickspace\forall A\right|_{M, v^{x}_{\beta}}=1$
+\end{Solution}
+
+\end{document}
