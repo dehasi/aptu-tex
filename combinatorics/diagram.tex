@@ -94,7 +94,7 @@
 Диаграммы Ферре для разбиений вида $P_k\left(n\right)$ - множество диаграмм с не более чем $k$ столбцами, но транспонируя такую диаграмму получаем диаграмму с не более чем $k$ элементами в строке т. е. количество таких диаграмм  есть решение задачи вида:
 \[
 	\begin{split}
-		& 1\cdot y_1 + 2\cdot y_2 + ... + k y_n = n \\
+		& 1\cdot y_1 + 2\cdot y_2 + ... + k y_k = n \\
 		& y_i \ge 0
 	\end{split}
 \]
@@ -107,7 +107,7 @@
 Теперь рассмотрим диаграммы Ферре для чисел $p_k\left(n\right)$, тогда в транспонированной диаграмме есть как минимум одна строка, в которой будет $k$ точек, т. е. имеем задачу:
 \[
 	\begin{split}
-		& y_1 + 2 y_2 + ... +k y_n = n\\
+		& y_1 + 2 y_2 + ... +k y_k = n\\
 		& y_i \ge 0, y_k = 1
 	\end{split}
 \]
@@ -116,7 +116,7 @@
 \[
 	\begin{split}
 		&f\left(x\right) = \left(1+x+x^2+...\right)\left(1+x^2+x^4+\right)...\left(x^k+x^{2k}+..\right) = \\
-		& x^k \left(1+x+x^2+...\right)\left(1+x^2+x^4+...\right)...\left(1+x^k+x^{2k}+...\right) = \frac{1}{\left(1-x\right)\left(1-x^2\right)...\left(1-x^k\right)}
+		& x^k \left(1+x+x^2+...\right)\left(1+x^2+x^4+...\right)...\left(1+x^k+x^{2k}+...\right) = \frac{x^k}{\left(1-x\right)\left(1-x^2\right)...\left(1-x^k\right)}
 	\end{split}
 \]
 
