@@ -1,0 +1,57 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{listings}
+\usepackage[dvips]{graphicx}
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=2cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\graphicspath{{images/}}
+
+\begin{document}
+\sloppy
+
+\lstset{
+	basicstyle=\small,
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	columns=fixed,
+	breaklines=true,
+	numbers=right,
+	numberstyle=\tiny
+}
+
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Th}{Теорема}
+\newtheorem{Lem}[Th]{Лемма}
+\newenvironment{Proof}
+	{\par\noindent{\bf Доказательство.}}
+	{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{Solution}
+	{\par\noindent{\bf Решение.}}
+	{\hfill$\scriptstyle\blacksquare$}
+
+
+\begin{flushright}
+	Кринкин М. Ю. группа 504 (SE)
+\end{flushright}
+
+\section{Домашнее задание 3}
+
+\paragraph{2.1} Пусть $\left|G\right| < \infty$, $H \trianglelefteq G$, $gcd\left(\left|H\right|,\left|G:H\right|\right) = 1$, $F \le G$ и $\left|F\right| = \left|H\right|$. Докажите, что $F = H$.
+
+\begin{Solution}
+Если $H$ нормальна в $G$, то $gH = Hg$ $\forall g \in G$. Для для всех $h \in H$ и $f \in F$ множество $\{hf\}$ объединение классов смежности вида $Hf$, но в тоже время в силу нормальности $Hf = fH$
+\end{Solution}
+
+\end{document}
