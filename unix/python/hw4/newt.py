@@ -3,6 +3,7 @@
 import cmath
 from numpy import *
 from numpy.linalg import *
+from pylab import *
 
 theta1 = float(raw_input('enter first angle: '))
 theta2 = float(raw_input('enter second angle: '))
@@ -52,4 +53,7 @@ for step in xrange(steps):
 	dv = array(gendiffv(alpha))
 	alpha = alpha - idf.dot(dv)
 
-print alpha
+drawvec = [alpha[i][0] for i in xrange(n)]
+xs = [i for i in xrange(n)]
+plot(xs, drawvec)
+show()
