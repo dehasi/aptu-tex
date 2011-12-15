@@ -19,11 +19,6 @@ typedef struct __ctnode
 
 typedef ctnode_t *pctnode_t;
 
-static ctnode_t *nodes = NULL;
-static pctnode_t *sorted = NULL;
-static int size = 0;
-static pctnode_t root;
-
 void insertion_sort(pctnode_t *array, int left, int right)
 {
 	int i, j;
@@ -70,6 +65,11 @@ void quick_sort(pctnode_t *array, int left, int right)
 		insertion_sort(array, l, right);
 }
 
+static ctnode_t *nodes = NULL;
+static pctnode_t *sorted = NULL;
+static int size = 0;
+static pctnode_t root;
+
 void init()
 {
 	int i, y;
@@ -102,7 +102,8 @@ void buildtree()
 		root = sorted[0];
 		last = root;
 		for (i = 1; i < size; i++) {
-			while (last->parent != NULL && sorted[i]->y > last->y)
+			while (last->parent != NULL &&
+						sorted[i]->y > last->y)
 				last = last->parent;
 			if (sorted[i]->y <= last->y) {
 				sorted[i]->left = last->right;
