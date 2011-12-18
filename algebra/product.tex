@@ -215,3 +215,88 @@ $p \in \mathbb{P}$, $G$ - конечная $p$-группа, если $\left|G\r
 	\left|X\right| = \sum 1 \mod p
 \]
 \end{Def}
+
+\chapter{Полу прямое произведение групп и все, что с ним связано}
+
+Продолжаем наверстывать упущенное, и теперь о всяких сложностях связанных с прямым произведением групп.
+
+\section{Вводные определения}
+
+\begin{Def}
+$G$ - группа, $Aut\left(G\right)$ - группа автоморфизмов группы $G$. $Aut\left(G\right) \le S\left(G\right)$ и является группой относительно композиции.
+\end{Def}
+
+\begin{Def}
+$Z\left(G\right) = \lbrace g \in G | \forall x \in G \left(gx = xg\right)\rbrace$ - центр группы $G$, т. е. множество ее коммутирующих элементов.
+
+$G \trianglelefteq Z\left(G\right)$
+\end{Def}
+
+\begin{Def}
+$\left[a, b\right] = aba^{-1}b^{-1}$ - коммутатор элементов $a,b \in G$
+\end{Def}
+
+\begin{Def}
+$\left[G, G\right] = <\left[a, b\right] | a,b \in G>$ - подгруппа порожденная коммутаторами называется коммутантом.
+\end{Def}
+
+Внутренними автоморфизамами называют автоморфизмы действующие на группу сопряжением, т. е. $Inn\left(G\right) = \lbrace \gamma_g | \gamma_g \left(x\right) = g x g^{-1} \rbrace \trianglelefteq Aut\left(G\right)$.
+
+Отображение $\gamma : G \rightarrow Inn\left(G\right)$ по правилу $g \mapsto \gamma_g$ является гомоморфизмом, его ядром очевидно являются элементы $G$ перестановочные со всеми, т. е. $Ker \left( \gamma \right) = Z\left(G\right)$
+
+Отсюда, в частности, получаем, что $G/Z\left(G\right) \cong Inn\left(G\right)$
+
+\paragraph{Пример.} 
+\[
+	Aut\left(\mathbb{Z} / {n \mathbb{Z}}\right) \cong \left(\mathbb{Z}/{n \mathbb{Z}}\right)^*
+\]
+
+т. к. группа $\mathbb{Z} / {n \mathbb{Z}}$ - абелева, то она совпадает со своим центром, а тогда $\mathbb{Z} / {n \mathbb{Z}}$ состоит всего из одного элемента, следовательно все автоморфизмы являются внешними.
+
+\begin{Th}
+$Aut\left(G\S_n\right) = Inn\left(S_n\right)$ если $n \ge 3$ и $n \not= 6$, при $n = 6$ $Out\left(S_6\right) \cong C_2$
+\end{Th}
+
+Для случая $n=3$: $g x g^{-1} \rightarrow^{\phi} \phi\left(g\right)\phi\left(x\right)\phi\left(g^{-1}\right) = \phi\left(g\right)\phi\left(x\right)\phi^{-1}\left(g\right)$  - класс сопряженности переходит в класс сопряженности, в случае $S_n$ классы сопряженности - перестановки с одинаковым цикловым индексом.
+
+$S_3$ состоит из следующих классов сопряженности $\lbrace id \rbrace$, $\lbrace \left(1 2\right), \left(1 3\right), \left(2 3\right) \rbrace$, $\lbrace \left(1 2 3\right), \left(1 3 2\right)\rbrace$, для этих классов все достаточно легко проверяется.
+
+\begin{Th}
+$G$ - группа, а $H \trianglelefteq G$, тогда $G/H$ - абелева тогда и только тогда, когда $\left[G, G\right] \le H$
+\end{Th}
+
+\begin{Proof}
+\[
+	\forall g_1, g_2 \in G \left[g_1 H g_2 H = g_2 H g_1 H\right] \Leftrightarrow \forall g_1^{-1}g_2^{-1}g_1g_2 \in H \Leftrightarrow g_1 g_2 H = g_2 g_1 H
+\]
+откуда получаем требуемое.
+\end{Proof}
+
+\section{Группы диэдра и полупрямое произведение}
+
+Начнем с просто примера, рассмотрим так называемые группы диэдра - группа автоморфизмов правильного многоугольника (обозначается как $D_n$).
+
+Пусть $\phi \in \left[\left. 0; 2\pi\right)\right.$, а через $\alpha_\phi$ обозначим действие - поворот на угол $\phi$, через $\epsilon$ обозначим отражение относительно вещественной оси (или сопряжение, если вы смотрите на это как на комплексные числа).
+
+Теперь через $F$ обозначим следующую группу поворотов $\lbrace \alpha_o, \alpha_{\frac{2\pi}{n}}, \alpha_{\frac{4\pi}{n}}, ... , \alpha_{\frac{2\pi\left(n-1\right)}{n}}$.
+
+Через $F\epsilon$ обозначим группу симметрий вида $z \mapsto \alpha_{\phi} \epsilon\left(z\right)$
+
+Через $H$ обозначим простую группу $\lbrace id, \epsilon \rbrace$.
+
+Группа преобразований правильного многоугольника $D_n = F \sqcup F\epsilon = <F \cup H>$ - группа образованная произведениями элементов из $F$ и $H$.
+
+Видно, что $F\cap H = \lbrace 1 \rbrace$ - вот такая вот забавная группа.
+
+\begin{Def}
+Пусть $F,H$ - группа и задано действие группы $H$ на группу $F$:
+\[
+	\phi : H \rightarrow Aut\left(F\right)
+\]
+тогда полупряммым произведением групп $F$ и $H$ называется группа $F \leftthreetimes_\phi H$, множество которой $F \times H$, а операция задана как:
+\[
+	\left(f_1, h_1\right)\left(f_2, h_2\right) = \left(f_1 \circ \phi\left(h_1\right)\left(f_2\right), h_1h_2\right)
+\]
+\end{Def}
+
+Единицей в полупрямом произведении так и остается $1_{F \leftthreetimes H} = \left(1_F,1_H\right)$, а обратным элементом является $\left(f,h\right)^{-1} = \left(\phi\left(h^{-1}\right)\left(f^{-1}\right), h^{-1}\right)$, действиетльно $\left(f,h\right)\left(\phi\left(h^{-1}\right)\left(f^{-1}\right),h^{-1}\right) = \left(f\circ\phi\left(h\right)\left(\phi\left(h^{-1}\right)\right)\left(f^{-1}\right),1\right) = \left(1, 1\right)$
