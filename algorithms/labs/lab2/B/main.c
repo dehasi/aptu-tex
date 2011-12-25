@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+#include <time.h>
 
 #define CUTOFF 20
 
@@ -40,6 +41,7 @@ void quick_sort(pctnode_t *array, int left, int right)
 	int l = left, r = right - 1;
 	pctnode_t temp, p;
 
+	if (right - left <= 1) return;
 	p = array[l + rand() % (right - left)];
 
 	do {
@@ -72,8 +74,7 @@ static pctnode_t root;
 
 void init()
 {
-	int i, y;
-	key_t x;
+	int i, y, x;
 
 	scanf("%d", &size);
 	if (size > 0) {
@@ -93,7 +94,7 @@ void init()
 	quick_sort(sorted, 0, size);
 }
 
-void buildtree()
+void build_tree()
 {
 	pctnode_t last = NULL;
 	int i;
@@ -121,7 +122,7 @@ void buildtree()
 	}
 }
 
-void printresults()
+void print_results()
 {
 	int p, l, r, i;
 	printf("YES\n");
@@ -143,7 +144,7 @@ int main()
 {
 	srand(time(NULL));
 	init();
-	buildtree();
-	printresults();
+	build_tree();
+	print_results();
 	finit();
 }
