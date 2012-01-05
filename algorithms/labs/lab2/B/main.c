@@ -147,4 +147,6 @@ int main()
 	build_tree();
 	print_results();
 	finit();
+
+	return 0;
 }
