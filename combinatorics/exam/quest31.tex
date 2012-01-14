@@ -16,7 +16,7 @@
 			k_1 + ... + k_{n-k+1} = k
 			\atop
 			1\cdot k_1 + ... +\left(n-k+1\right)\cdot k_{n-k+1} = n
-			} \frac{n!}{k_1!\cdot ... \cdot \left(n-k+1\right)!} \left(\frac{x_1}{1}\right)^{k_1}\cdot...\cdot\left(\frac{x_{n-k+1}}{\left(n-k+1\right)}\right)^{k_{n-k+1}}
+			} \frac{n!}{k_1!\cdot ... \cdot k_{n-k+1}!} \left(\frac{x_1}{1}\right)^{k_1}\cdot...\cdot\left(\frac{x_{n-k+1}}{\left(n-k+1\right)}\right)^{k_{n-k+1}}
 	\end{split}
 \]
 получили коэффициенты очень похожие на полиномы Белла (но все же не их), смысл которых не трудно понять - количество перестановок, в которых ровно $k_1$ циклов единичной длинны, $k_2$ циклов из двух элементов и т. д. (можно сказать, что это количество перестановок совпадающих по "сигнатуре" - цикловому классу перестановки).
@@ -44,7 +44,7 @@
 Теперь построим рекуррентное соотношение для дополненного цикловго индекса, используя производящуюю функцию:
 \[
 	\begin{split}
-		& C\left(x\right) = \sum_{n=0}^{\infty} \tilde Z_n\left(x_1, ..., x_n\right) \frac{x^n}{n!} = exp\left(x_1x + x_2 \frac{x^2}{2} + x_3 \frac{x^3}{3}\right)
+		& C\left(x\right) = \sum_{n=0}^{\infty} \tilde Z_n\left(x_1, ..., x_n\right) \frac{x^n}{n!} = exp\left(x_1x + x_2 \frac{x^2}{2} + x_3 \frac{x^3}{3} + ...\right)
 	\end{split}
 \]
 
