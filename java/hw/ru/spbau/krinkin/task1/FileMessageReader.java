@@ -9,13 +9,13 @@ import ru.spbau.krinkin.task1.Message;
 import ru.spbau.krinkin.task1.IllegalMessageFormatException;
 
 /**
- * class FileMessageReader reads Messages from a specified file
+ * class FileMessageReader reads {@link ru.spbau.krinkin.task1.Message Message} from a specified file
  *
  * @author Mike Krinkin, SPbAU 
  * @version 1.0
  */
 public class FileMessageReader {
-	private BufferedReader m_reader;
+	private BufferedReader m_reader = null;
 
 	/**
 	 * FileMessageReader class constructor, open file for reading
@@ -24,12 +24,11 @@ public class FileMessageReader {
 	 * @throws FileNotFoundException
 	 */	
 	public FileMessageReader(String fileName) throws FileNotFoundException {
-		m_reader = new BufferedReader(
-				new FileReader(fileName));
+		m_reader = new BufferedReader(new FileReader(fileName));
 	}
 	
 	/**
-	 * method read a Message from a file
+	 * method read a {@link ru.spbau.krinkin.task1.Message Message} from a file
 	 *
 	 * @return The {@link ru.spbau.krinkin.task1.Message Message} was read from a file
 	 * @throws IllegalMessageFormatException bad file format exception
@@ -40,29 +39,38 @@ public class FileMessageReader {
 		Message msg = null;
 		
 		try {
-			if(line != null) {
+			if (line != null) {
 				int nLines = Integer.parseInt(line);
 				msg = new Message();
 			
-				for(int i = 0; i < nLines; i++) {
+				for (int i = 0; i < nLines; i++) {
 					line = m_reader.readLine();
-					if(line != null) {
+					if (line != null) {
 						msg.append(line);
 					} else {
+						close();
 						throw new IllegalMessageFormatException(
 								"Expected " + nLines + " lines, but only "
 								+ i + " lines exists");
 					}
 				}
 			}
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
+			close();
 			throw new IllegalMessageFormatException(
 				"Number expected, but \"" + line + "\" exists");
-		} finally {
-			m_reader.close();
-			m_reader = null;
 		}
 		
 		return msg;
+	}
+	
+	/**
+	 * method close the input stream
+	 *
+	 * @throws IOException
+	 */
+	public void close() throws IOException {
+		m_reader.close();
+		m_reader = null;
 	}
 }
