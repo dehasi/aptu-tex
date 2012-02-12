@@ -136,14 +136,17 @@ wget http://www.kernel.org/pub/linux/kernel/v3.0/testing/linux-3.3-rc3.tar.bz2
 tar xjf linux-3.3-rc3.tar.bz2
 ln -s linux-3.3-rc3 linux
 cd linux
-cp /boot/config-`uname -r` ./.config //или просто tab-ом добить до полной версии ядра
+cp /boot/config-`uname -r` ./.config //or use tab
 make oldconfig
-<зажимаем Enter пока все не закончится, читать не надо>
+<hold Enter>
 make menuconfig
-<виртуализацию в ядре из-за проблем с lguest> //только ради этих плясок с бубном нужен libncurses5-dev
+<there is bug with lguest, without linux-headers, so deactivate virtualization> //libncurses5-dev
 make-kpkg clean
 fakeroot make-kpkg --initrd --append-to-version=-mine kernel_image kernel_headers -j2
 \end{lstlisting}
+
+чтобы избежать плясок с бубном вокруг lguest, можно предварительно установить пакет linux-headers-`uname -r`, тогда проблем с компиляцией из-за lguest
+возникнуть не должно.
 
 \paragraph{Примечания:}
 
