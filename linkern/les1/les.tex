@@ -128,6 +128,7 @@ make allmodulesconfig
 
 \begin{lstlisting}
 su
+<enter password>
 apt-get install kernel-package fakeroot wget bzip2 libncurses5-dev
 su <user>
 mkdir wc
@@ -143,6 +144,11 @@ make menuconfig
 <there is bug with lguest, without linux-headers, so deactivate virtualization> //libncurses5-dev
 make-kpkg clean
 fakeroot make-kpkg --initrd --append-to-version=-mine kernel_image kernel_headers -j2
+cd ..
+su
+<enter password>
+dpkg -i linux-image-3.3.0-rc3-mine_3.3.0-rc3-mine-10.00.Custom_i386.deb linux-headers-3.3.0-rc3-mine_3.3.0-rc3-mine-10.00.Custom_i386.deb
+su <user>
 \end{lstlisting}
 
 чтобы избежать плясок с бубном вокруг lguest, можно предварительно установить пакет linux-headers-`uname -r`, тогда проблем с компиляцией из-за lguest
