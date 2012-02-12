@@ -124,6 +124,37 @@ make allmodulesconfig
 \item Настраиваем начальный загрузчик
 \end{itemize}
 
+\paragraph{Сборка ядра Linux под Debian системы:}
+
+\begin{lstlisting}
+su
+apt-get install kernel-package fakeroot wget bzip2
+su <user>
+mkdir wc
+cd wc
+wget http://www.kernel.org/pub/linux/kernel/v3.0/testing/linux-3.3-rc3.tar.bz2
+tar xjf linux-3.3-rc3.tar.bz2
+ln -s linux-3.3-rc3 linux
+cd linux
+cp /boot/config-`uname -r` ./.config //или просто tab-ом добить до полной версии ядра
+make oldconfig
+<зажимаем Enter пока все не закончится, читать не надо>
+make-kpkg clean
+fakeroot make-kpkg --initrd --append-to-version=-mine kernel_image kernel_headers
+\end{lstlisting}
+
+\paragraph{Примечания:}
+
+\begin{itemize}
+\item Во многих howto пишуть распаковать исходники /usr/src, не делайте так, это смертный грех.
+
+\item Можно в послденей команде указывать флаг -j, для более быстрой сборки, правда, полезность этого под виртуальной машиной сомнительна
+
+\item В Debian Stable переодически возникают проблемы со сборкой ядер последних версий, эти проблемы возникают из-за использования старой версии
+компилятора gcc, которая может не поддерживать некоторые атрибуты используемые в исходных кодах ядра (вот вам и острие прогресса), поэтому если вы столкнулись
+с такой проблемой обновите gcc из testing репозитория Debian 
+\end{itemize}
+
 \paragraph{Байка}.
 
 Почему ядро от Линуса называют ванильным? Потому, что к ванильному мороженному можно добавлять ингредиенты (сиропы, посыпки,
