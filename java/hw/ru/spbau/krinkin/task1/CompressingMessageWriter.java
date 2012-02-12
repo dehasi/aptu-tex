@@ -6,17 +6,27 @@ import ru.spbau.krinkin.task1.ConsoleMessageWriter;
 import ru.spbau.krinkin.task1.Message;
 
 /**
- * class ComressingMessageWriter extends {@link ru.spbau.krinkin.task1.ConsoleMessageWriter ConsoleMessageWriter}, but
- * compress two messages in one {@link ru.spbau.krinkin.task1.Message Message} then outputs to a specified file
+ * class ComressingMessageWriter implements {@link ru.spbau.krinkin.task1.MessageWriter MessageWriter}.
+ * It compress two messages in one {@link ru.spbau.krinkin.task1.Message Message} then outputs it with
+ * specified {@link ru.spbau.krinkin.task1.MessageWriter MessageWriter}
  *
  * @author Mike Krinkin, SPbAU 
  * @version 1.0
  */
-public class CompressingMessageWriter extends ConsoleMessageWriter {
+public class CompressingMessageWriter implements MessageWriter {
 	private Message m_lastMessage = null;
+	private MessageWriter m_writer = null;
+	
+	public CompressingMessageWriter(MessageWriter writer) throws NullPointerException {
+		if (writer == null) {
+			throw new NullPointerException("writer must be not null");
+		}
+		m_writer = writer;
+	}
 
 	/**
-	 * method merges pairs of {@link ru.spbau.krinkin.task1.Message Message} and then puts union in System.out
+	 * method merges pairs of {@link ru.spbau.krinkin.task1.Message Message} and then writes it using
+	 * specified {@link ru.spbau.krinkin.task1.MessageWriter MessageWriter}
 	 *
 	 * @param msg {@link ru.spbau.krinkin.task1.Message Message}
 	 * @throws IOException
@@ -24,7 +34,7 @@ public class CompressingMessageWriter extends ConsoleMessageWriter {
 	public void writeMessage(Message msg) throws IOException {
 		if (m_lastMessage != null) {
 			m_lastMessage.append(msg);
-			super.writeMessage(m_lastMessage);
+			m_writer.writeMessage(m_lastMessage);
 			m_lastMessage = null;
 		} else {
 			m_lastMessage = msg;
@@ -39,8 +49,8 @@ public class CompressingMessageWriter extends ConsoleMessageWriter {
 	 */
 	public void close() throws IOException {
 		if (m_lastMessage != null) {
-			super.writeMessage(m_lastMessage);
+			m_writer.writeMessage(m_lastMessage);
 		}
-		super.close();
+		m_writer.close();
 	}
 }
