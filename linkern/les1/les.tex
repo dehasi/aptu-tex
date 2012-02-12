@@ -128,7 +128,7 @@ make allmodulesconfig
 
 \begin{lstlisting}
 su
-apt-get install kernel-package fakeroot wget bzip2
+apt-get install kernel-package fakeroot wget bzip2 libncurses5-dev
 su <user>
 mkdir wc
 cd wc
@@ -139,8 +139,10 @@ cd linux
 cp /boot/config-`uname -r` ./.config //или просто tab-ом добить до полной версии ядра
 make oldconfig
 <зажимаем Enter пока все не закончится, читать не надо>
+make menuconfig
+<виртуализацию в ядре из-за проблем с lguest> //только ради этих плясок с бубном нужен libncurses5-dev
 make-kpkg clean
-fakeroot make-kpkg --initrd --append-to-version=-mine kernel_image kernel_headers
+fakeroot make-kpkg --initrd --append-to-version=-mine kernel_image kernel_headers -j2
 \end{lstlisting}
 
 \paragraph{Примечания:}
